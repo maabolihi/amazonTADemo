@@ -61,7 +61,7 @@ node {
         # Activate Python venv
         source \$HOME/TA_env/bin/activate
         cd \$WORKSPACE/${GIT_REPO}
-        export no_proxy="int.paynet.my,infra.paynet.my,local"
+        #export no_proxy="int.paynet.my,infra.paynet.my,local"
         #export TEST_ENVIRONMENT=UAT
         #export TEST_PROFILE=jenkins_i_wont_run_outside_jenkins
         PATH=\$HOME/opt:\$PATH \
@@ -72,7 +72,7 @@ node {
 
         step([
             $class              : 'RobotPublisher',
-            outputPath          : "${GIT_REPO}/Reports/",
+            outputPath          : "${GIT_REPO}",
             outputFileName      : 'output.xml',
             reportFileName      : 'report.html',
             logFileName         : 'log.html',
@@ -82,19 +82,3 @@ node {
             otherFiles          : "*.png, *.jpg",
             ])
         }
-
-    stage ('Notification') {
-        if (currentBuild.currentResult == 'UNSTABLE' || currentBuild.currentResult == 'FAILURE') {
-            sh """
-            echo "Build is unstable/failed/error"
-            """
-            emailext(
-                mimeType: 'text/html',
-                from:     'jenkins@paynet.net',
-                to:       'nazarul.annuar@paynet.my, cheong.loong@paynet.my, aimi@paynet.my, nabil@paynet.my, faisal.johari@paynet.my',
-                replyTo:  '$DEFAULT_REPLYTO',
-                subject:  '$DEFAULT_SUBJECT',
-                body:     '$DEFAULT_CONTENT')
-            }
-        }
-    }
