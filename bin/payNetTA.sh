@@ -1,0 +1,1 @@
+C:/sers/alee/PycharmProjects/amazonTADemo>robot --variable browser:Chrome TestCase
