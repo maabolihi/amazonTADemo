@@ -66,8 +66,8 @@ node {
         #python3 -u -m robot --variable browser:Firefox TestCase
         #PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
         # Run tests
+        #PYTHONPATH=\$HOME/TA_env/bin:\$PYTHONPATH \
         PATH=\$HOME/opt:\$PATH \
-        PYTHONPATH=\$HOME/TA_env/bin:\$PYTHONPATH \
         python3 -u -m robot \
         --variable browser:Firefox \
         TestCases
