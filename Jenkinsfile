@@ -51,9 +51,9 @@ node {
     stage ('Test') {
         sh """
         # Setup display
-        #export DISPLAY=":99.0"
-        #Xvfb :99 -screen 0 1280x1024x8 -ac &
-        #sleep 1
+        export DISPLAY=":99.0"
+        Xvfb :99 -screen 0 1280x1024x8 -ac &
+        sleep 1
 
         # Activate Python venv
         source \$HOME/TA_env/bin/activate
@@ -62,9 +62,8 @@ node {
         PATH=\$HOME/opt:\$PATH \
         PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
         python3 -u -m robot \
-        --variable browser:Firefox \
+        --variable browser:Chrome \
         --nostatusrc \
-        --variable browser:Firefox \
         -d Reports \
         TestCase
         """
