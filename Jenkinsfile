@@ -62,8 +62,10 @@ node {
         #export TEST_ENVIRONMENT=UAT
         #export TEST_PROFILE=jenkins_i_wont_run_outside_jenkins
         export PATH=\$HOME/opt:\$PATH \
-        #PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
         python3 -u -m robot -d Reports --variable browser:Firefox TestCase
+        #PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
+        # Run tests
+
         """
 
         step([
