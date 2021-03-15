@@ -62,7 +62,7 @@ node {
         PATH=\$HOME/opt:\$PATH \
         PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
         python3 -u -m robot \
-        --variable browser:Chrome \
+        --variable browser:Firefox \
         --nostatusrc \
         -d Reports \
         TestCase
