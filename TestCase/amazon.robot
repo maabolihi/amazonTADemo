@@ -1,5 +1,5 @@
 *** Settings ***
-Library  SeleniumLibrary
+Library  SeleniumLibrary    run_on_failure=None
 Resource  ../TestCaseKeyword/amazon.robot
 Resource  ../setup.robot
 Suite Setup    Test Setup
