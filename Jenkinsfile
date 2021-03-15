@@ -51,8 +51,9 @@ node {
     stage ('Test') {
         sh """
         # Setup display
-        Xvfb :99 &
-        export DISPLAY=:99
+        export DISPLAY=":99.0"
+        Xvfb :99 -screen 0 1280x1024x8 -ac &
+        sleep 1
 
         # Activate Python venv
         source \$HOME/TA_env/bin/activate
