@@ -58,23 +58,14 @@ node {
         # Activate Python venv
         source \$HOME/TA_env/bin/activate
         cd \$WORKSPACE/${GIT_REPO}
-        #export no_proxy="int.paynet.my,infra.paynet.my,local"
-        #export TEST_ENVIRONMENT=UAT
-        #export TEST_PROFILE=jenkins_i_wont_run_outside_jenkins
-        #export PATH=\$HOME/opt:\$PATH
 
-        #python3 -u -m robot --variable browser:Firefox TestCase
-        #PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
-        # Run tests
-        #PYTHONPATH=\$HOME/TA_env/bin:\$PYTHONPATH \
-        #PATH=\$HOME/opt:\$PATH \
-PATH=\$HOME/opt:\$PATH \
-PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
-python3 -u -m robot \
---nostatusrc \
---variable browser:Firefox \
--d Reports \
-TestCase
+        PATH=\$HOME/opt:\$PATH \
+        PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
+        python3 -u -m robot \
+        --nostatusrc \
+        --variable browser:Firefox \
+        -d Reports \
+        TestCase
         """
 
         step([
