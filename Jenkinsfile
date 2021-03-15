@@ -10,7 +10,6 @@ node {
         sh """
         git clone https://github.com/maabolihi/amazonTADemo.git
         # Python virtual environment (venv)
-        sudo apt-get install python3-venv
         python3 -m venv \$HOME/TA_env
         source \$HOME/TA_env/bin/activate
         python3 -m pip install --upgrade pip
