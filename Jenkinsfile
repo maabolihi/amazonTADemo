@@ -1,6 +1,3 @@
-#def GIT_URL = "gitlab.infra.paynet.my"
-#def GIT_GROUP = "FPX/testing"
-#def GIT_REPO = "fpx-qa-automation"
 def GIT_REPO = "amazonTADemo"
 def FIREFOX_VERSION = "78.5.0esr"
 def CHROMEDRIVER_VERSION = "86.0.4240.22"
