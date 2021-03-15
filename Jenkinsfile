@@ -61,12 +61,16 @@ node {
         #export no_proxy="int.paynet.my,infra.paynet.my,local"
         #export TEST_ENVIRONMENT=UAT
         #export TEST_PROFILE=jenkins_i_wont_run_outside_jenkins
-        export PATH=\$HOME/opt:\$PATH \
+        #export PATH=\$HOME/opt:\$PATH
 
-        python3 -u -m robot --variable browser:Firefox TestCase
+        #python3 -u -m robot --variable browser:Firefox TestCase
         #PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
         # Run tests
-
+        PATH=\$HOME/opt:\$PATH \
+        PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
+        python3 -u -m robot \
+        --variable browser:Firefox \
+        TestCases
         """
 
         step([
