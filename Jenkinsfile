@@ -68,9 +68,13 @@ node {
         # Run tests
         #PYTHONPATH=\$HOME/TA_env/bin:\$PYTHONPATH \
         #PATH=\$HOME/opt:\$PATH \
-        python3 -u -m robot \
-        --variable browser:Firefox \
-        TestCases
+PATH=\$HOME/opt:\$PATH \
+PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
+python3 -u -m robot \
+--nostatusrc \
+--variable browser:Firefox \
+-d Reports \
+TestCase
         """
 
         step([
