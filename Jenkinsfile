@@ -63,7 +63,7 @@ node {
         #export TEST_PROFILE=jenkins_i_wont_run_outside_jenkins
         PATH=\$HOME/opt:\$PATH \
         #PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
-        python3 -u -m robot -d Reports TestCase
+        python3 -u -m robot -d Reports --variable browser:Firefox TestCase
         """
 
         step([
