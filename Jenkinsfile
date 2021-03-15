@@ -61,7 +61,8 @@ node {
 
         PATH=\$HOME/opt:\$PATH \
         PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
-        python3 -u -m --variable browser:Firefox robot \
+        python3 -u -m robot \
+        --variable browser:Firefox \
         --nostatusrc \
         --variable browser:Firefox \
         -d Reports \
