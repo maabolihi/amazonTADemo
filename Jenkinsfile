@@ -63,7 +63,7 @@ node {
         PATH=\$HOME/opt:\$PATH
         PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
 
-        python3 -u -m pabot \
+        python3 -u -m robot \
         --variable browser:Firefox \
         --nostatusrc \
         -d Reports/firefox \
@@ -83,7 +83,7 @@ node {
         PATH=\$HOME/opt:\$PATH
         PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
 
-        python3 -u -m pabot \
+        python3 -m robot \
         --variable browser:Chrome \
         --nostatusrc \
         -d Reports/chrome \
