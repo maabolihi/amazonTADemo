@@ -69,10 +69,10 @@ node {
         TestCases
 
         python3 -u -m robot \
-        —-rerunfailed output.xml \
+        --rerunfailed output.xml \
         --variable browser:Firefox \
         --critical smoke_test \
-        -—output rerun.xml \
+        --output rerun.xml \
         --nostatusrc \
         TestCases
 
