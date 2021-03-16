@@ -3,6 +3,11 @@ def FIREFOX_VERSION = "78.5.0esr"
 def CHROMEDRIVER_VERSION = "89.0.4389.23"
 def GECKODRIVER_VERSION = "0.29.0"
 
+properties([
+    pipelineTriggers([
+        cron('* 9-17 * * *')
+        ]),
+    ])
 
 node {
     stage ('Pre-Requisites') {
