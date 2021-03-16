@@ -82,14 +82,14 @@ node {
         PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
 
         python3 -u -m robot \
-        —-rerunfailed Reports/output1.xml \
+        —-rerunfailed Reports/output.xml \
         --variable browser:Firefox \
         --critical smoke_test \
-        -—output Reports/output2.xml \
+        -—output Reports/output1.xml \
         --nostatusrc \
         TestCases
 
-        python3 -u -m rebot — output Reports/output.xml — merge Reports/output1.xml Reports/output2.xml
+        python3 -u -m rebot — output Reports/output.xml — merge Reports/output.xml Reports/output1.xml
 
         """
 
