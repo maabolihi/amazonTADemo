@@ -48,7 +48,7 @@ node {
         """
         }
 
-    stage ('Test') {
+    stage ('Test In Firefox') {
         sh """
         # Setup display
         export DISPLAY=":99.0"
@@ -68,18 +68,6 @@ node {
         --nostatusrc \
         TestCases
 
-        """
-    }
-
-    stage ('Rerun') {
-        sh """
-        # Activate Python venv
-        source \$HOME/TA_env/bin/activate
-        cd \$WORKSPACE/${GIT_REPO}
-
-        PATH=\$HOME/opt:\$PATH
-        PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
-
         python3 -u -m robot \
         —-rerunfailed output.xml \
         --variable browser:Firefox \
@@ -91,8 +79,7 @@ node {
         python3 -u -m rebot — merge output.xml rerun.xml
 
         """
-
-        step([
+         step([
             $class              : 'RobotPublisher',
             outputPath          : "${GIT_REPO}",
             outputFileName      : 'output.xml',
@@ -103,5 +90,5 @@ node {
             unstableThreshold   : 95,
             otherFiles          : "*.png, *.jpg",
             ])
-        }
+         }
     }
