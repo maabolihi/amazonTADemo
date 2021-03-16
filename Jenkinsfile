@@ -1,7 +1,7 @@
 def GIT_REPO = "amazonTADemo"
 def FIREFOX_VERSION = "78.5.0esr"
 def CHROMEDRIVER_VERSION = "86.0.4240.22"
-def GECKODRIVER_VERSION = "0.28.0"
+def GECKODRIVER_VERSION = "0.29.0"
 
 
 node {
