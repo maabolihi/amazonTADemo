@@ -81,7 +81,7 @@ node {
         PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
 
         python3 -u -m robot \
-        —-rerunfailed Reports/output.xml \
+        —-rerunfailed output.xml \
         --variable browser:Firefox \
         --critical smoke_test \
         -—output rerun.xml \
