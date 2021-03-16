@@ -69,7 +69,6 @@ node {
         -o output.xml \
         TestCases
 
-        cp Reports/log.html Reports/firefox_run_log.html
         """
         }
 
@@ -90,7 +89,6 @@ node {
         -o output.xml \
         TestCases
 
-        cp Reports/log.html Reports/chrome_run_log.html
         """
         step([
             $class              : 'RobotPublisher',

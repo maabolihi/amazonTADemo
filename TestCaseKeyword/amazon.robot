@@ -18,7 +18,12 @@ ${LocatorLogInButton}    xpath=//input[@id="continue"]
 *** Keywords ***
 Open Amazon Page
     [Arguments]     ${browser}
-    Open Browser   url=${AmazonUrl}  browser=${browser}
+    ${list} =     Create List    --no-sandbox    --disable-dev-shm-usage
+    ${args} =     Create Dictionary    args=${list}
+    ${desired caps} =     Create Dictionary    platform=${OS}     chromeOptions=${args}
+    Run Keyword If      '${browser}' == 'Chrome'    Open Browser   url=${AmazonUrl}  browser=${browser} desired_capabilities=${desired caps}
+    ...     ELSE
+    ...     Open Browser   url=${AmazonUrl}  browser=${browser}
     Maximize Browser Window
 
 Verify Amazon Page Loaded
