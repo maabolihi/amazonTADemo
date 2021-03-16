@@ -64,9 +64,41 @@ node {
 
         python3 -u -m robot \
         --variable browser:Firefox \
-        --critical smoke_test \
         --nostatusrc \
         TestCases
+        """
+        step([
+            $class              : 'RobotPublisher',
+            outputPath          : "${GIT_REPO}",
+            outputFileName      : 'output.xml',
+            reportFileName      : 'report.html',
+            logFileName         : 'log.html',
+            disableArchiveOutput: false,
+            passThreshold       : 100,
+            unstableThreshold   : 95,
+            otherFiles          : "*.png, *.jpg",
+            ])
+        }
+
+    stage ('Rerun') {
+        sh """
+
+        # Activate Python venv
+        source \$HOME/TA_env/bin/activate
+        cd \$WORKSPACE/${GIT_REPO}
+
+        PATH=\$HOME/opt:\$PATH
+        PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
+
+        python3 -u -m robot \
+        --rerunfailed output.xml \
+        --variable browser:Firefox \
+        --nostatusrc \
+        --output rerun.xml \
+        TestCases
+
+        rebot --nostatusrc --merge output.xml rerun.xml
+
         """
         step([
             $class              : 'RobotPublisher',
