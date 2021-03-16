@@ -7,6 +7,7 @@ properties([
     pipelineTriggers([
         cron('*/5 9-17 * * *')
         ]),
+    buildDiscarder(logRotator(daysToKeepStr: '3', numToKeepStr: '15')),
     ])
 
 node {
