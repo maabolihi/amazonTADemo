@@ -7,8 +7,6 @@ Suite Setup    Test Setup
 # the browser will be opened in the start-up of the test case
 Test Setup       Open Amazon Page    browser=${Browser}
 Test Teardown    Close Browser
-Metadata  Log of Firefox Run   [firefox_run_log.html|firefox_run_log.html]
-Metadata  Log of Chrome Run  [chrome_run_log.html|second_run_log.html]
 
 *** Keywords ***
 
