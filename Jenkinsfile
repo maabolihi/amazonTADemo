@@ -101,7 +101,7 @@ node {
         source \$HOME/TA_env/bin/activate
         cd \$WORKSPACE/${GIT_REPO}
 
-        rebot --nostatusrc --outputdir Reports --output output.xml --merge output/chrome_result.xml  output/firefox_result.xml
+        rebot --nostatusrc --outputdir Reports --output output.xml --merge Reports/chrome_result.xml  Reports/firefox_result.xml
         """
         step([
             $class              : 'RobotPublisher',
