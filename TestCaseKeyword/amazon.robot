@@ -18,13 +18,23 @@ ${LocatorLogInButton}    xpath=//input[@id="continue"]
 *** Keywords ***
 Open Amazon Page
     [Arguments]     ${browser}
-    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys
-    Call Method    ${options}    add_argument    --no-sandbox
-    Call Method    ${options}    add_argument    --disable-dev-shm-usage    # See https://stackoverflow.com/questions/50642308/org-openqa-selenium-webdriverexception-unknown-error-devtoolsactiveport-file-d
-    Run Keyword If      '${browser}' == 'Chrome'    Open Browser   url=${AmazonUrl}  browser=${browser} desired_capabilities=${options}
+    Run Keyword If      '${browser}' == 'Chrome'    Open Chrome   url=${AmazonUrl}
     ...     ELSE
     ...     Open Browser   url=${AmazonUrl}  browser=${browser}
     Maximize Browser Window
+
+Open Chrome
+    [Arguments]    ${url}
+    ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
+    Call Method    ${chrome_options}    add_argument    --disable-extensions
+    Call Method    ${chrome_options}    add_argument    --headless
+    Call Method    ${chrome_options}    add_argument    --disable-gpu
+    Call Method    ${chrome_options}    add_argument    --no-sandbox
+    Call Method    ${chrome_options}    add_argument    --disable-dev-shm-usage
+    ${enableLogging}    Create list    enable-logging
+    Call Method    ${chrome options}    add_experimental_option    excludeSwitches    ${enableLogging}
+    Create Webdriver    Chrome    chrome_options=${chrome_options}
+    Go To    ${url}
 
 Verify Amazon Page Loaded
     Capture Page Screenshot
