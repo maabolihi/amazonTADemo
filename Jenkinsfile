@@ -68,21 +68,6 @@ node {
         --nostatusrc \
         TestCases
         """
-        }
-    stage ('Rerun') {
-        sh """
-        python3 -u -m robot \
-        --rerunfailed output.xml \
-        --variable browser:Firefox \
-        --critical smoke_test \
-        --output rerun.xml \
-        --nostatusrc \
-        TestCases
-
-        rebot --nostatusrc --merge output.xml rerun.xml
-
-        """
-
         step([
             $class              : 'RobotPublisher',
             outputPath          : "${GIT_REPO}",
@@ -95,4 +80,5 @@ node {
             otherFiles          : "*.png, *.jpg",
             ])
         }
+
     }
