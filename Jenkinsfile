@@ -68,6 +68,25 @@ node {
         -d Reports \
         TestCase
         """
+    }
+
+    stage ('Rerun') {
+        sh """
+        # Setup display
+        export DISPLAY=":99.0"
+        Xvfb :99 -screen 0 1280x1024x8 -ac &
+        sleep 1
+
+        python3 -u -m robot \
+        robot —-rerunfailed Reports/output1.xml \
+        --variable browser:Firefox \
+        --critical smoke_test \
+        -—output Reports/output2.xml \
+        --nostatusrc \
+        TestCase
+
+        python3 -u -m rebot — output Reports/output.xml — merge Reports/output1.xml Reports/output2.xml
+        """
 
         step([
             $class              : 'RobotPublisher',

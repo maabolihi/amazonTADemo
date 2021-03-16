@@ -5,7 +5,7 @@ Library  SeleniumLibrary
 *** Variables ***
 ${AmazonUrl}  https://www.amazon.com/
 ${UnavailableIpadProName}    2020 Apple iPad Pro (12.9-inch, Wi-Fi, 256GB) - Space Gray (4th Generation)
-${LocatorSearchBox}    xpath=//input[@id="twotabsearchtextbox"]
+${LocatorSearchBox}    xpath=//input[@id="atwotabsearchtextbox"]
 ${LocatorConditionOfUse}    xpath=//a[text()="Conditions of Use"]
 ${LocatorSearchButton}    xpath=//input[@id="nav-search-submit-button"]
 ${LocatorCurrentlyUnavailable}    xpath=//span[text()="Currently unavailable."]
