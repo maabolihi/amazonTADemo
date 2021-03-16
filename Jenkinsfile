@@ -17,6 +17,7 @@ node {
         python3 -m pip install robotframework-seleniumlibrary
         python3 -m pip install robotframework-sshlibrary
         python3 -m pip install robotframework-pdf2textlibrary
+        python3 -m pip install robotframework-pabot
         python3 -m pip install pyyaml
         python3 -m pip install requests
         deactivate
@@ -62,7 +63,7 @@ node {
         PATH=\$HOME/opt:\$PATH
         PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
 
-        python3 -u -m robot \
+        python3 -u -m pabot \
         --variable browser:Firefox \
         --nostatusrc \
         -d Reports/firefox \
@@ -82,7 +83,7 @@ node {
         PATH=\$HOME/opt:\$PATH
         PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
 
-        python3 -u -m robot \
+        python3 -u -m pabot \
         --variable browser:Chrome \
         --nostatusrc \
         -d Reports/chrome \
@@ -90,17 +91,6 @@ node {
         TestCases
 
         """
-        step([
-            $class              : 'RobotPublisher',
-            outputPath          : "${GIT_REPO}/Reports",
-            outputFileName      : "**/output.xml",
-            reportFileName      : '**/report.html',
-            logFileName         : '**/log.html',
-            disableArchiveOutput: false,
-            passThreshold       : "${env.ROBOT_PASS_THRESHOLD}" as double,
-            unstableThreshold   : "${env.ROBOT_UNSTABLE_THRESHOLD}" as double,
-            otherFiles          : "**/*.png,**/*.jpg",
-            ])
         }
 
     stage ('Publish RobotFramework Result') {
