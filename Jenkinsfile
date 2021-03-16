@@ -99,8 +99,8 @@ node {
             reportFileName      : '**/report.html',
             logFileName         : '**/log.html',
             disableArchiveOutput: false,
-            passThreshold       : 100,
-            unstableThreshold   : 95,
+            passThreshold       : "${env.ROBOT_PASS_THRESHOLD}" as double,
+            unstableThreshold   : "${env.ROBOT_UNSTABLE_THRESHOLD}" as double,
             otherFiles          : "**/*.png,**/*.jpg",
             ])
         }
