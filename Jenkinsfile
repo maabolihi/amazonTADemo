@@ -5,7 +5,7 @@ def GECKODRIVER_VERSION = "0.29.0"
 
 properties([
     pipelineTriggers([
-        cron('* 9-17 * * *')
+        cron('*/5 9-17 * * *')
         ]),
     ])
 
