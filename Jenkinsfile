@@ -17,7 +17,6 @@ node {
         python3 -m pip install robotframework-seleniumlibrary
         python3 -m pip install robotframework-sshlibrary
         python3 -m pip install robotframework-pdf2textlibrary
-        python3 -m pip install robotframework-pabot
         python3 -m pip install pyyaml
         python3 -m pip install requests
         deactivate
