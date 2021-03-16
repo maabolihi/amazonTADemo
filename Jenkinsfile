@@ -66,7 +66,6 @@ node {
         --variable browser:Firefox \
         --critical smoke_test \
         --nostatusrc \
-        -d Reports \
         TestCases
 
         """
@@ -85,17 +84,17 @@ node {
         —-rerunfailed Reports/output.xml \
         --variable browser:Firefox \
         --critical smoke_test \
-        -—output Reports/output1.xml \
+        -—output rerun.xml \
         --nostatusrc \
         TestCases
 
-        python3 -u -m rebot — output Reports/output.xml — merge Reports/output.xml Reports/output1.xml
+        python3 -u -m rebot — merge output.xml rerun.xml
 
         """
 
         step([
             $class              : 'RobotPublisher',
-            outputPath          : "${GIT_REPO}/Reports",
+            outputPath          : "${GIT_REPO}",
             outputFileName      : 'output.xml',
             reportFileName      : 'report.html',
             logFileName         : 'log.html',
