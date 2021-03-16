@@ -92,5 +92,16 @@ node {
 
         cp Reports/log.html Reports/chrome_run_log.html
         """
+                step([
+            $class              : 'RobotPublisher',
+            outputPath          : "${GIT_REPO}/Reports",
+            outputFileName      : "**/output.xml",
+            reportFileName      : '**/report.html',
+            logFileName         : '**/log.html',
+            disableArchiveOutput: false,
+            passThreshold       : 100,
+            unstableThreshold   : 95,
+            otherFiles          : "**/*.png,**/*.jpg",
+            ])
         }
     }
