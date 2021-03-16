@@ -102,4 +102,19 @@ node {
             otherFiles          : "**/*.png,**/*.jpg",
             ])
         }
+
+    stage ('Publish RobotFramework Result') {
+
+        step([
+            $class              : 'RobotPublisher',
+            outputPath          : "${GIT_REPO}/Reports",
+            outputFileName      : "**/output.xml",
+            reportFileName      : '**/report.html',
+            logFileName         : '**/log.html',
+            disableArchiveOutput: false,
+            passThreshold       : 100,
+            unstableThreshold   : 90,
+            otherFiles          : "**/*.png,**/*.jpg",
+            ])
+        }
     }
