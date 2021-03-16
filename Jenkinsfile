@@ -79,7 +79,8 @@ node {
         rebot --merge output.xml rerun.xml
 
         """
-         step([
+
+        step([
             $class              : 'RobotPublisher',
             outputPath          : "${GIT_REPO}",
             outputFileName      : 'output.xml',
@@ -90,5 +91,5 @@ node {
             unstableThreshold   : 95,
             otherFiles          : "*.png, *.jpg",
             ])
-         }
+        }
     }
