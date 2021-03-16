@@ -65,8 +65,8 @@ node {
         python3 -u -m robot \
         --variable browser:Firefox \
         --nostatusrc \
-        -d Reports \
-        -o firefox_result.xml \
+        -d Reports/firefox \
+        -o output.xml \
         TestCases
 
         cp Reports/log.html Reports/firefox_run_log.html
@@ -86,13 +86,13 @@ node {
         python3 -u -m robot \
         --variable browser:Chrome \
         --nostatusrc \
-        -d Reports \
-        -o chrome_result.xml \
+        -d Reports/chrome \
+        -o output.xml \
         TestCases
 
         cp Reports/log.html Reports/chrome_run_log.html
         """
-                step([
+        step([
             $class              : 'RobotPublisher',
             outputPath          : "${GIT_REPO}/Reports",
             outputFileName      : "**/output.xml",
