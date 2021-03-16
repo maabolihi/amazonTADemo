@@ -22,16 +22,19 @@ Open Amazon Page
     Maximize Browser Window
 
 Verify Amazon Page Loaded
+    Capture Page Screenshot
     Wait Until Element Is Visible    ${LocatorSearchBox}
     Wait Until Element Is Visible    ${LocatorConditionOfUse}
 
 Search Product
     [Arguments]     ${productToSearch}
+    Capture Page Screenshot
     Input Text  ${LocatorSearchBox}    ${productToSearch}
     Click Button  ${LocatorSearchButton}
 
 Verify Product Shown Is Unavailable
     [Arguments]     ${productName}
+    Capture Page Screenshot
     Wait Until Element Is Visible    xpath=//span[text()="${productName}"]
     Click Element    xpath=//span[text()="${productName}"]
     Wait Until Element Is Visible    ${LocatorCurrentlyUnavailable}
@@ -42,6 +45,7 @@ Go To Login Page
 
 Enter User Name Email
     [Arguments]     ${userEmail}
+    Capture Page Screenshot
     Input Text  ${LocatorSignInEmail}    ${userEmail}
 
 Invalid Login Error Shown
@@ -49,6 +53,7 @@ Invalid Login Error Shown
 
 Verify Invalid Email User
     [Arguments]     ${userEmail}
+    Capture Page Screenshot
     Enter User Name Email    userEmail=${userEmail}
     Click Button  ${LocatorLogInButton}
     Invalid Login Error Shown
