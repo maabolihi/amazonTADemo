@@ -68,6 +68,7 @@ node {
         --nostatusrc \
         -d Reports \
         TestCases
+
         """
     }
 
@@ -89,6 +90,7 @@ node {
         TestCases
 
         python3 -u -m rebot — output Reports/output.xml — merge Reports/output1.xml Reports/output2.xml
+
         """
 
         step([
