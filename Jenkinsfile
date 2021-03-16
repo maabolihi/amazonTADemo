@@ -65,22 +65,15 @@ node {
         python3 -u -m robot \
         --variable browser:Firefox \
         --nostatusrc \
+        -d Reports \
+        -o firefox_result.xml \
         TestCases
+
+        cp Reports/log.html Reports/firefox_run_log.html
         """
-        step([
-            $class              : 'RobotPublisher',
-            outputPath          : "${GIT_REPO}",
-            outputFileName      : 'output.xml',
-            reportFileName      : 'report.html',
-            logFileName         : 'log.html',
-            disableArchiveOutput: false,
-            passThreshold       : 100,
-            unstableThreshold   : 95,
-            otherFiles          : "*.png, *.jpg",
-            ])
         }
 
-    stage ('Rerun') {
+    stage ('Test In Chrome') {
         sh """
 
         # Activate Python venv
@@ -91,18 +84,28 @@ node {
         PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
 
         python3 -u -m robot \
-        --rerunfailed output.xml \
-        --variable browser:Firefox \
+        --variable browser:Chrome \
         --nostatusrc \
-        --output rerun.xml \
+        -d Reports \
+        -o chrome_result.xml \
         TestCases
 
-        rebot --nostatusrc --merge output.xml rerun.xml
+        cp Reports/log.html Reports/chrome_run_log.html
+        """
+        }
 
+    stage ('Compile Output') {
+        sh """
+
+        # Activate Python venv
+        source \$HOME/TA_env/bin/activate
+        cd \$WORKSPACE/${GIT_REPO}
+
+        rebot --nostatusrc --outputdir Reports --output output.xml --merge output/chrome_result.xml  output/firefox_result.xml
         """
         step([
             $class              : 'RobotPublisher',
-            outputPath          : "${GIT_REPO}",
+            outputPath          : "${GIT_REPO}/Reports",
             outputFileName      : 'output.xml',
             reportFileName      : 'report.html',
             logFileName         : 'log.html',
@@ -112,5 +115,4 @@ node {
             otherFiles          : "*.png, *.jpg",
             ])
         }
-
     }
