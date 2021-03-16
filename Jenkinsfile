@@ -70,7 +70,7 @@ node {
 
         step([
             $class              : 'RobotPublisher',
-            outputPath          : "${GIT_REPO}",
+            outputPath          : "${GIT_REPO}/Reports",
             outputFileName      : 'output.xml',
             reportFileName      : 'report.html',
             logFileName         : 'log.html',
