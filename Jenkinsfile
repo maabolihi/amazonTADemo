@@ -76,7 +76,7 @@ node {
         --nostatusrc \
         TestCases
 
-        python3 -u -m rebot — merge output.xml rerun.xml
+        rebot --merge output.xml rerun.xml
 
         """
          step([
