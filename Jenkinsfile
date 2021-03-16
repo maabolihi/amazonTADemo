@@ -59,10 +59,16 @@ node {
         source \$HOME/TA_env/bin/activate
         cd \$WORKSPACE/${GIT_REPO}
 
-        PATH=\$HOME/opt:\$PATH \
-        PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH \
+        PATH=\$HOME/opt:\$PATH
+        PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
         python3 -u -m robot \
         --variable browser:Firefox \
+        --nostatusrc \
+        -d Reports \
+        TestCase
+
+        python3 -u -m robot \
+        --variable browser:Chrome \
         --nostatusrc \
         -d Reports \
         TestCase
