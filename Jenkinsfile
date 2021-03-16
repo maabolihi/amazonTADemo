@@ -63,12 +63,7 @@ node {
         PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
         python3 -u -m robot \
         --variable browser:Firefox \
-        --nostatusrc \
-        -d Reports \
-        TestCase
-
-        python3 -u -m robot \
-        --variable browser:Chrome \
+        --critical smoke_test \
         --nostatusrc \
         -d Reports \
         TestCase

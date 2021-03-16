@@ -12,11 +12,13 @@ Test Teardown    Close Browser
 *** Test Cases ***
 
 Test Case 1: Search Ipad 2020 In Amazon
+    [Tags]  smoke_test
     amazon.Verify Amazon Page Loaded
     amazon.Search Product  productToSearch=Ipad 2020
     amazon.Verify Product Shown Is Unavailable  productName=${UnavailableIpadProName}
 
 Test Case 2: Invalid Log In Amazon
+    [Tags]  log_in
     amazon.Verify Amazon Page Loaded
     amazon.Go To Login Page
     amazon.Verify Invalid Email User  userEmail=${InvalidUserNameEmail}
