@@ -67,7 +67,10 @@ node {
         --critical smoke_test \
         --nostatusrc \
         TestCases
-
+        """
+        }
+    stage ('Rerun') {
+        sh """
         python3 -u -m robot \
         --rerunfailed output.xml \
         --variable browser:Firefox \
@@ -76,7 +79,7 @@ node {
         --nostatusrc \
         TestCases
 
-        rebot --merge output.xml rerun.xml
+        rebot --nostatusrc --merge output.xml rerun.xml
 
         """
 
