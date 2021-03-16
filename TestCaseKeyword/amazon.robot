@@ -18,6 +18,7 @@ ${LocatorLogInButton}    xpath=//input[@id="continue"]
 *** Keywords ***
 Open Amazon Page
     [Arguments]     ${browser}
+    ${OS}=    Evaluate    platform.system()    platform
     ${list} =     Create List    --no-sandbox    --disable-dev-shm-usage
     ${args} =     Create Dictionary    args=${list}
     ${desired caps} =     Create Dictionary    platform=${OS}     chromeOptions=${args}
