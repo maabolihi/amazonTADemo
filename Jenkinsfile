@@ -66,12 +66,18 @@ node {
         --critical smoke_test \
         --nostatusrc \
         -d Reports \
-        TestCase
+        TestCases
         """
     }
 
     stage ('Rerun') {
         sh """
+        # Activate Python venv
+        source \$HOME/TA_env/bin/activate
+        cd \$WORKSPACE/${GIT_REPO}
+
+        PATH=\$HOME/opt:\$PATH
+        PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
 
         python3 -u -m robot \
         —-rerunfailed Reports/output1.xml \
@@ -79,7 +85,7 @@ node {
         --critical smoke_test \
         -—output Reports/output2.xml \
         --nostatusrc \
-        TestCase
+        TestCases
 
         python3 -u -m rebot — output Reports/output.xml — merge Reports/output1.xml Reports/output2.xml
         """
