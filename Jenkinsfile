@@ -93,26 +93,4 @@ node {
         cp Reports/log.html Reports/chrome_run_log.html
         """
         }
-
-    stage ('Compile Output') {
-        sh """
-
-        # Activate Python venv
-        source \$HOME/TA_env/bin/activate
-        cd \$WORKSPACE/${GIT_REPO}
-
-        rebot --nostatusrc --outputdir Reports --output output.xml --merge Reports/chrome_result.xml  Reports/firefox_result.xml
-        """
-        step([
-            $class              : 'RobotPublisher',
-            outputPath          : "${GIT_REPO}/Reports",
-            outputFileName      : "**/output.xml",
-            reportFileName      : '**/report.html',
-            logFileName         : '**/log.html',
-            disableArchiveOutput: false,
-            passThreshold       : 100,
-            unstableThreshold   : 95,
-            otherFiles          : "*.png, *.jpg",
-            ])
-        }
     }
