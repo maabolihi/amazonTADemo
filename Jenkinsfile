@@ -78,7 +78,7 @@ node {
         sh """
 
         # Activate Python venv
-        source \$HOME/TA_env/bin/activate
+        source \$WORKSPACE/${GIT_REPO}/TA_env/bin/activate
         cd \$WORKSPACE/${GIT_REPO}
 
         PATH=\$HOME/opt:\$PATH
