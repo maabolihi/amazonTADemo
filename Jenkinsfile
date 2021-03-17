@@ -18,7 +18,7 @@ node {
         # Python virtual environment (venv)
         python3 -m venv \$WORKSPACE/${GIT_REPO}/TA_env
         source \$WORKSPACE/${GIT_REPO}/TA_env/bin/activate
-	    cd \$WORKSPACE/${GIT_REPO}
+	    which python
         python3 -m pip install --upgrade pip
 	    python3 -m pip install -r requirements.txt
         deactivate
