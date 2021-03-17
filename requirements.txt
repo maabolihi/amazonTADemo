@@ -1,0 +1,10 @@
+#
+####### example-requirements.txt #######
+#
+###### Requirements without Version Specifiers ######
+robotframework
+robotframework-seleniumlibrary
+robotframework-sshlibrary
+robotframework-pdf2textlibrary
+pyyaml
+requests

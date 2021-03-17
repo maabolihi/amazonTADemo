@@ -16,15 +16,11 @@ node {
         sh """
         git clone https://github.com/maabolihi/amazonTADemo.git
         # Python virtual environment (venv)
-        python3 -m venv \$HOME/TA_env
-        source \$HOME/TA_env/bin/activate
+        python3 -m venv \$WORKSPACE/${GIT_REPO}/TA_env
+        source \$WORKSPACE/${GIT_REPO}/TA_env/bin/activate
+	    cd \$WORKSPACE/${GIT_REPO}
         python3 -m pip install --upgrade pip
-        python3 -m pip install robotframework
-        python3 -m pip install robotframework-seleniumlibrary
-        python3 -m pip install robotframework-sshlibrary
-        python3 -m pip install robotframework-pdf2textlibrary
-        python3 -m pip install pyyaml
-        python3 -m pip install requests
+	    python3 -m pip install -r requirements.txt
         deactivate
 
         # Download packages
