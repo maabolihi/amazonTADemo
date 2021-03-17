@@ -2,6 +2,7 @@ def GIT_REPO = "amazonTADemo"
 def FIREFOX_VERSION = "78.5.0esr"
 def CHROMEDRIVER_VERSION = "89.0.4389.23"
 def GECKODRIVER_VERSION = "0.29.0"
+def WORKING_DIR = "\$WORKSPACE/${GIT_REPO}"
 
 properties([
     pipelineTriggers([
@@ -16,19 +17,19 @@ node {
         sh """
         git clone https://github.com/maabolihi/amazonTADemo.git
         # Python virtual environment (venv)
-        python3 -m venv \$WORKSPACE/${GIT_REPO}/TA_env
-        source \$WORKSPACE/${GIT_REPO}/TA_env/bin/activate
-	    cd \$WORKSPACE/${GIT_REPO}
+        python3 -m venv ${WORKING_DIR}/TA_env
+        source  ${WORKING_DIR}/TA_env/bin/activate
+	    cd  ${WORKING_DIR}
 	    which python
         python3 -m pip install --upgrade pip
 	    python3 -m pip install -r requirements.txt
         deactivate
 
         # Download packages
-        if [ ! -d \$HOME/opt ]; then
-            mkdir \$HOME/opt
+        if [ ! -d ${WORKING_DIR}/opt ]; then
+            mkdir ${WORKING_DIR}/opt
         fi
-        cd \$HOME/opt
+        cd ${WORKING_DIR}/opt
 
         # Download chromedriver
         if [ ! -f chromedriver ]; then
@@ -44,7 +45,7 @@ node {
             chmod +x geckodriver
         fi
 
-        PATH=\$HOME/opt:\$PATH
+        PATH=${WORKING_DIR}/opt:\$PATH
         export PATH
         which chromedriver
         which geckodriver
@@ -59,11 +60,10 @@ node {
         sleep 1
 
         # Activate Python venv
-        source \$WORKSPACE/${GIT_REPO}/TA_env/bin/activate
-        cd \$WORKSPACE/${GIT_REPO}
+        source ${WORKING_DIR}/TA_env/bin/activate
+        cd ${WORKING_DIR}
 
         PATH=\$HOME/opt:\$PATH
-        PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
 
         python3 -u -m robot \
         --variable browser:Firefox \
@@ -79,11 +79,10 @@ node {
         sh """
 
         # Activate Python venv
-        source \$WORKSPACE/${GIT_REPO}/TA_env/bin/activate
-        cd \$WORKSPACE/${GIT_REPO}
+        source ${WORKING_DIR}/TA_env/bin/activate
+        cd ${WORKING_DIR}
 
         PATH=\$HOME/opt:\$PATH
-        PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
 
         python3 -m robot \
         --variable browser:Chrome \
