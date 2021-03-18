@@ -173,4 +173,3 @@ pipeline {
             sh("${env.WORKSPACE}/security/zap/runCleanup.sh")
         }	
 	}
-}
