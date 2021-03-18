@@ -35,9 +35,11 @@ pipeline {
 		choice(name: 'ZAP_ALERT_LVL', choices: ['High', 'Medium', 'Low'], description: 'See Zap documentation, default High')
 	}
 	stages{
-
-    stage ('Test In Firefox') {
-	step([$class: 'WsCleanup'])
+    		stage ('Test In Firefox') {
+	steps{
+		script {
+					cleanWs()					
+		}
         sh """
         git clone https://github.com/maabolihi/amazonTADemo.git
         # Python virtual environment (venv)
@@ -94,8 +96,10 @@ pipeline {
 
         """
         }
+	}
 
     stage ('Test In Chrome') {
+	steps{
         sh """
 
         # Activate Python venv
@@ -112,11 +116,13 @@ pipeline {
         TestCases
 
         """
+	}
         }
 
     stage ('Publish RobotFramework Result') {
 
-        step([
+	steps{
+		[
             $class              : 'RobotPublisher',
             outputPath          : "${GIT_REPO}/Reports",
             outputFileName      : "**/output.xml",
@@ -127,6 +133,7 @@ pipeline {
             unstableThreshold   : 90,
             otherFiles          : "**/*.png,**/*.jpg",
             ])
+	}
         }
 	stage('Initialize'){
 			steps{
