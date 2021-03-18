@@ -63,7 +63,7 @@ node {
         source ${WORKING_DIR}/TA_env/bin/activate
         cd ${WORKING_DIR}
 
-        PATH=\$HOME/opt:\$PATH
+        PATH=${WORKING_DIR}/opt:\$PATH
 
         python3 -u -m robot \
         --variable browser:Firefox \
@@ -82,7 +82,7 @@ node {
         source ${WORKING_DIR}/TA_env/bin/activate
         cd ${WORKING_DIR}
 
-        PATH=\$HOME/opt:\$PATH
+        PATH=${WORKING_DIR}/opt:\$PATH
 
         python3 -m robot \
         --variable browser:Chrome \
