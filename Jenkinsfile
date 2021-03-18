@@ -133,8 +133,7 @@ pipeline {
             	otherFiles          : "**/*.png,**/*.jpg",])
 	}
 	}
-        }
-	stage('Initialize'){
+	stage ('Initialize'){
 			steps{
 				script {
 					currentBuild.displayName = "#${env.BUILD_NUMBER}-ZAP scan on ${params.ZAP_TARGET_URL}"
@@ -143,7 +142,7 @@ pipeline {
 				}
 			}
 		}
-		stage('ZAP'){
+		stage ('ZAP'){
 			when { branch 'master' }
 			steps{
 				sh("echo ${env.WORKSPACE}; ls -l;")
@@ -153,7 +152,7 @@ pipeline {
 				sh("${env.WORKSPACE}/security/zap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
 			}
 		}
-		stage('Publish'){
+		stage ('Publish'){
 			when { branch 'master' }
 			steps{
 				publishHTML([allowMissing: false,
@@ -171,3 +170,4 @@ pipeline {
             sh("${env.WORKSPACE}/security/zap/runCleanup.sh")
         }	
 	}
+		}
