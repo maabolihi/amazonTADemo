@@ -122,17 +122,15 @@ pipeline {
     stage ('Publish RobotFramework Result') {
 
 	steps{
-		[
-            $class              : 'RobotPublisher',
-            outputPath          : "${GIT_REPO}/Reports",
-            outputFileName      : "**/output.xml",
-            reportFileName      : '**/report.html',
-            logFileName         : '**/log.html',
-            disableArchiveOutput: false,
-            passThreshold       : 100,
-            unstableThreshold   : 90,
-            otherFiles          : "**/*.png,**/*.jpg",
-            ]
+	RobotPublisher([
+		outputPath          : "${GIT_REPO}/Reports",
+            	outputFileName      : "**/output.xml",
+            	reportFileName      : '**/report.html',
+            	logFileName         : '**/log.html',
+            	disableArchiveOutput: false,
+            	passThreshold       : 100,
+            	unstableThreshold   : 90,
+            	otherFiles          : "**/*.png,**/*.jpg",])
 	}
 	}
         }
