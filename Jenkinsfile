@@ -134,6 +134,7 @@ pipeline {
             otherFiles          : "**/*.png,**/*.jpg",
             ])
 	}
+	}
         }
 	stage('Initialize'){
 			steps{
