@@ -47,10 +47,13 @@ Search Product
     Input Text  ${LocatorSearchBox}    ${productToSearch}
     Click Button  ${LocatorSearchButton}
 
-Verify Product Shown Is Unavailable
+Verify Product Is Shown
     [Arguments]     ${productName}
     Capture Page Screenshot
     Wait Until Element Is Visible    xpath=//span[text()="${productName}"]
+
+Verify Product Is Unavailable
+    [Arguments]     ${productName}
     Click Element    xpath=//span[text()="${productName}"]
     Wait Until Element Is Visible    ${LocatorCurrentlyUnavailable}
 
