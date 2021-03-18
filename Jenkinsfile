@@ -3,7 +3,15 @@ def FIREFOX_VERSION = "78.5.0esr"
 def CHROMEDRIVER_VERSION = "89.0.4389.23"
 def GECKODRIVER_VERSION = "0.29.0"
 def WORKING_DIR = "\$WORKSPACE/${GIT_REPO}"
-
+def checkoutGitSCM(branch,gitUrl) {
+	checkout([$class: 'GitSCM',
+		branches: [[name: branch ]],
+		doGenerateSubmoduleConfigurations: false,
+		extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '.']],
+		submoduleCfg: [],
+		userRemoteConfigs: [[url: gitUrl]]
+	])
+}
 properties([
     pipelineTriggers([
         cron('*/30 9-17 * * *')
@@ -11,9 +19,25 @@ properties([
     buildDiscarder(logRotator(daysToKeepStr: '3', numToKeepStr: '15')),
     ])
 
-node {
-    stage ('Pre-Requisites') {
-        step([$class: 'WsCleanup'])
+
+pipeline {
+	agent {
+		node { label 'test' }
+	}
+    options {
+		timestamps()
+		disableConcurrentBuilds()
+		buildDiscarder(logRotator(numToKeepStr: '10'))
+		timeout(time: 180, unit: 'MINUTES')
+	}
+	parameters {
+		string(name: 'ZAP_TARGET_URL', defaultValue:'http://www.itsecgames.com', description:'')
+		choice(name: 'ZAP_ALERT_LVL', choices: ['High', 'Medium', 'Low'], description: 'See Zap documentation, default High')
+	}
+	stages{
+
+    stage ('Test In Firefox') {
+	step([$class: 'WsCleanup'])
         sh """
         git clone https://github.com/maabolihi/amazonTADemo.git
         # Python virtual environment (venv)
@@ -49,11 +73,7 @@ node {
         export PATH
         which chromedriver
         which geckodriver
-        """
-        }
-
-    stage ('Test In Firefox') {
-        sh """
+	
         # Setup display
         export DISPLAY=":99.0"
         Xvfb :99 -screen 0 1280x1024x8 -ac &
@@ -108,4 +128,40 @@ node {
             otherFiles          : "**/*.png,**/*.jpg",
             ])
         }
-    }
+	stage('Initialize'){
+			steps{
+				script {
+					currentBuild.displayName = "#${env.BUILD_NUMBER}-ZAP scan on ${params.ZAP_TARGET_URL}"
+					currentWorkspace=pwd()
+					cleanWs()					
+				}
+			}
+		}
+		stage('ZAP'){
+			when { branch 'master' }
+			steps{
+				sh("echo ${env.WORKSPACE}; ls -l;")
+				checkoutGitSCM("main","https://github.com/maabolihi/zap_jenkins.git")
+				sh("bash -c \"chmod +x ${env.WORKSPACE}/*.sh\"")
+				sh("${env.WORKSPACE}/security/zap/validate_input.sh")
+				sh("${env.WORKSPACE}/security/zap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
+			}
+		}
+		stage('Publish'){
+			when { branch 'master' }
+			steps{
+				publishHTML([allowMissing: false,
+				alwaysLinkToLastBuild: false,
+				keepAll: false,
+				reportDir: './reports',
+				reportFiles: 'report.html',
+				reportName: 'ZAP scan report',
+				reportTitles: ''])
+			}
+		}
+	}
+	 post {
+        always {
+            sh("${env.WORKSPACE}/security/zap/runCleanup.sh")
+        }	
+	}
