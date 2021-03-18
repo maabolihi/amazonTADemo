@@ -19,7 +19,14 @@ Test Case 1: Search Ipad 2020 In Amazon
     ${passed}=  Run Keyword And Return Status   amazon.Verify Product Is Shown  productName=${UnavailableIpadProName}
     Run Keyword If	'${passed}'=='${TRUE}'	Verify Product Is Unavailabe    productName=${UnavailableIpadProName}
 
-Test Case 2: Invalid Log In Amazon
+Test Case 2: Search Ipad 2020 In Amazon 2
+    [Tags]  smoke_test
+    amazon.Verify Amazon Page Loaded
+    amazon.Search Product  productToSearch=Ipad 2020
+    ${passed}=  Run Keyword And Return Status   amazon.Verify Product Is Shown  productName=${UnavailableIpadProName}
+    Run Keyword If	'${passed}'=='${TRUE}'	Verify Product Is Unavailabe    productName=${UnavailableIpadProName}
+
+Test Case 3: Invalid Log In Amazon
     [Tags]  log_in
     amazon.Verify Amazon Page Loaded
     amazon.Go To Login Page
