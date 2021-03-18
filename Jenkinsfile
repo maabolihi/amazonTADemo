@@ -132,7 +132,7 @@ pipeline {
             passThreshold       : 100,
             unstableThreshold   : 90,
             otherFiles          : "**/*.png,**/*.jpg",
-            ])
+            ]
 	}
 	}
         }
