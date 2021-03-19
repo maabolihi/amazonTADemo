@@ -144,8 +144,8 @@ pipeline {
                     sh("echo ${env.WORKSPACE}; ls -l;")
                     checkoutGitSCM("main","https://github.com/maabolihi/zap_jenkins.git")
                     sh("bash -c \"chmod +x ${env.WORKSPACE}/*.sh\"")
-                    sh("${env.WORKSPACE}/security/zap/validate_input.sh")
-                    sh("${env.WORKSPACE}/security/zap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
+                    sh("${WORKING_DIR}/security/zap/validate_input.sh")
+                    sh("${WORKING_DIR}/security/zap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
                     publishHTML([allowMissing: false,
                     alwaysLinkToLastBuild: false,
                     keepAll: false,
@@ -158,7 +158,7 @@ pipeline {
 	}
 	 post {
         always {
-            sh("${env.WORKSPACE}/security/zap/runCleanup.sh")
+            sh("${WORKING_DIR}/security/zap/runCleanup.sh")
         }	
 	}
 		}
