@@ -125,7 +125,6 @@ pipeline {
                 unstableThreshold   : 90,
                 otherFiles          : "**/*.png,**/*.jpg",
                 ])
-            }
         }
     }
 }
