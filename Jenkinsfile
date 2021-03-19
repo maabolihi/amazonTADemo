@@ -39,7 +39,7 @@ pipeline {
 
                     sh """
 
-                     git clone https://github.com/maabolihi/amazonTADemo.git
+                    git clone https://github.com/maabolihi/amazonTADemo.git
                     # Python virtual environment (venv)
                     python3 -m venv ${WORKING_DIR}/TA_env
                     source  ${WORKING_DIR}/TA_env/bin/activate
@@ -74,16 +74,16 @@ pipeline {
                     which chromedriver
                     which geckodriver
 
-                    # Setup display
-                    export DISPLAY=":99.0"
-                    Xvfb :99 -screen 0 1280x1024x8 -ac &
-                    sleep 1
-                    """
 	            }
             }
             stage ('Test In Firefox'){
                 steps{
                     sh """
+                    # Setup display
+                    export DISPLAY=":99.0"
+                    Xvfb :99 -screen 0 1280x1024x8 -ac &
+                    sleep 1
+
                     # Activate Python venv
                     source ${WORKING_DIR}/TA_env/bin/activate
                     cd ${WORKING_DIR}
@@ -139,7 +139,7 @@ pipeline {
 			    when { branch 'master' }
                 steps{
                     sh("echo ${env.WORKSPACE}; ls -l;")
-                    sh("bash -c \"chmod +x ${WORKING_DIR}/*.sh\"")
+                    sh("bash -c \"chmod +x ${WORKING_DIR}/security/zap/*.sh\"")
                     sh("${WORKING_DIR}/security/zap/validate_input.sh")
                     sh("${WORKING_DIR}/security/zap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
                     publishHTML([allowMissing: false,
