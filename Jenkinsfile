@@ -14,7 +14,7 @@ pipeline {
 		timeout(time: 180, unit: 'MINUTES')
 	}
 	parameters {
-		string(name: 'ZAP_TARGET_URL', defaultValue:'https:planningtasks.com', description:'')
+		string(name: 'ZAP_TARGET_URL', defaultValue:'https://planningtasks.com/', description:'')
 		choice(name: 'ZAP_ALERT_LVL', choices: ['High', 'Medium', 'Low'], description: 'See Zap documentation, default High')
 	}
 	stages{
@@ -133,8 +133,8 @@ pipeline {
 			steps{
 				sh("echo ${env.WORKSPACE}/${GIT_REPO}/securityZap; ls -l;")
 				sh("bash -c \"chmod +x ${env.WORKSPACE}/${GIT_REPO}/securityZap/*.sh\"")
-				sh("${env.WORKSPACE}/${GIT_REPO}/validate_input.sh")
-				sh("${env.WORKSPACE}/${GIT_REPO}/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE}/${GIT_REPO}/securityZap ${params.ZAP_ALERT_LVL}")
+				sh("${env.WORKSPACE}/${GIT_REPO}/securityZap/validate_input.sh")
+				sh("${env.WORKSPACE}/${GIT_REPO}/securityZap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE}/${GIT_REPO}/securityZap ${params.ZAP_ALERT_LVL}")
 			}
 		}
 		stage('Publish Seurity Scan Result'){
