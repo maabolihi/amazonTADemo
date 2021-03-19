@@ -2,6 +2,7 @@ def GIT_REPO = "amazonTADemo"
 def FIREFOX_VERSION = "78.5.0esr"
 def CHROMEDRIVER_VERSION = "89.0.4389.23"
 def GECKODRIVER_VERSION = "0.29.0"
+def ZAP_DIR = "${env.WORKSPACE}/${GIT_REPO}/securityZAP"
 
 pipeline {
 	agent {
@@ -133,10 +134,10 @@ pipeline {
 		stage('ZAP'){
 			when { branch 'master' }
 			steps{
-				sh("echo ${env.WORKSPACE}; ls -l;")
-				sh("bash -c \"chmod +x ${env.WORKSPACE}/${GIT_REPO}/*.sh\"")
-				sh("${env.WORKSPACE}/${GIT_REPO}/validate_input.sh")
-				sh("${env.WORKSPACE}/${GIT_REPO}/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE}/${GIT_REPO} ${params.ZAP_ALERT_LVL}")
+				sh("echo ${ZAP_DIR}; ls -l;")
+				sh("bash -c \"chmod +x ${ZAP_DIR}/*.sh\"")
+				sh("${ZAP_DIR}/validate_input.sh")
+				sh("${ZAP_DIR}/runZapScan.sh ${params.ZAP_TARGET_URL} ${ZAP_DIR} ${params.ZAP_ALERT_LVL}")
 			}
 		}
 		stage('Publish'){
@@ -154,7 +155,7 @@ pipeline {
 	}
 	 post {
         always {
-            sh("${env.WORKSPACE}/runCleanup.sh")
+            sh("${ZAP_DIR}/runCleanup.sh")
         }
 	}
 }
