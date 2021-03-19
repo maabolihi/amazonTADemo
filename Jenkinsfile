@@ -130,7 +130,14 @@ pipeline {
                                 otherFiles          : "**/*.png,**/*.jpg",])
                     }
 	        }
-
+            stage('Initialize Zap Scan'){
+			    steps{
+				    script {
+					    currentWorkspace=pwd()
+					    cleanWs()
+				    }
+			    }
+		    }
 		    stage ('Run ZAP Scan'){
 			    when { branch 'master' }
                 steps{
