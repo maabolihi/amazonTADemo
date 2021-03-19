@@ -21,7 +21,7 @@ pipeline {
 		stage('Initialize'){
 			steps{
 				script {
-					currentBuild.displayName = "#${env.BUILD_NUMBER}-Automation on ${params.ZAP_TARGET_URL}"
+					currentBuild.displayName = "#${env.BUILD_NUMBER}-Test Automation on ${params.ZAP_TARGET_URL}"
 					currentWorkspace=pwd()
 					cleanWs()
 				}
