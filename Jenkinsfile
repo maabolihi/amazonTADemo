@@ -134,7 +134,7 @@ pipeline {
 				sh("echo ${env.WORKSPACE}/${GIT_REPO}/securityZap; ls -l;")
 				sh("bash -c \"chmod +x ${env.WORKSPACE}/${GIT_REPO}/securityZap/*.sh\"")
 				sh("${env.WORKSPACE}/${GIT_REPO}/securityZap/validate_input.sh")
-				sh("${env.WORKSPACE}/${GIT_REPO}/securityZap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE}/${GIT_REPO}/securityZap ${params.ZAP_ALERT_LVL}")
+				sh("${env.WORKSPACE}/${GIT_REPO}/securityZap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
 			}
 		}
 		stage('Publish Security Scan Result'){
@@ -142,7 +142,7 @@ pipeline {
 				publishHTML([allowMissing: false,
 				alwaysLinkToLastBuild: false,
 				keepAll: false,
-				reportDir: '.${GIT_REPO}/securityZap/reports',
+				reportDir: './reports',
 				reportFiles: 'report.html',
 				reportName: 'ZAP scan report',
 				reportTitles: ''])
