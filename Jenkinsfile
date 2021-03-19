@@ -92,6 +92,27 @@ pipeline {
                 """
 			}
 		}
+		stage ('Test In Chrome') {
+            steps{
+                sh """
+
+                # Activate Python venv
+                source \$HOME/TA_env/bin/activate
+                cd \$WORKSPACE/${GIT_REPO}
+
+                PATH=\$HOME/opt:\$PATH
+                PYTHONPATH=${WORKSPACE}/${GIT_REPO}/lib:\$PYTHONPATH
+
+                python3 -m robot \
+                --variable browser:Chrome \
+                --nostatusrc \
+                -d Reports/chrome \
+                -o output.xml \
+                TestCases
+
+                """
+            }
+        }
 		stage('Publish Robot Result'){
 			when { branch 'master' }
 			steps{
@@ -113,9 +134,9 @@ pipeline {
 			when { branch 'master' }
 			steps{
 				sh("echo ${env.WORKSPACE}; ls -l;")
-				sh("bash -c \"chmod +x ${env.WORKSPACE}/*.sh\"")
-				sh("${env.WORKSPACE}/validate_input.sh")
-				sh("${env.WORKSPACE}/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
+				sh("bash -c \"chmod +x ${env.WORKSPACE}/${GIT_REPO}/*.sh\"")
+				sh("${env.WORKSPACE}/${GIT_REPO}/validate_input.sh")
+				sh("${env.WORKSPACE}/${GIT_REPO}/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE}/${GIT_REPO} ${params.ZAP_ALERT_LVL}")
 			}
 		}
 		stage('Publish'){
