@@ -81,49 +81,45 @@ pipeline {
                     """
 	            }
             }
-    		stage ('Run Tests') {
-    		    parallel{
-                    stage ('Test In Firefox'){
-                        steps{
-                            sh """
-                            # Activate Python venv
-                            source ${WORKING_DIR}/TA_env/bin/activate
-                            cd ${WORKING_DIR}
+            stage ('Test In Firefox'){
+                steps{
+                    sh """
+                    # Activate Python venv
+                    source ${WORKING_DIR}/TA_env/bin/activate
+                    cd ${WORKING_DIR}
 
-                            PATH=${WORKING_DIR}/opt:\$PATH
+                    PATH=${WORKING_DIR}/opt:\$PATH
 
-                            python3 -u -m robot \
-                            --variable browser:Firefox \
-                            --nostatusrc \
-                            -d Reports/firefox \
-                            -o output.xml \
-                            TestCases
+                    python3 -u -m robot \
+                    --variable browser:Firefox \
+                    --nostatusrc \
+                    -d Reports/firefox \
+                     -o output.xml \
+                    TestCases
 
-                            """
-                        }
-
-                    }
-                    stage ('Test In Chrome'){
-                        steps{
-                            sh """
-                            # Activate Python venv
-                            source ${WORKING_DIR}/TA_env/bin/activate
-                            cd ${WORKING_DIR}
-
-                            PATH=${WORKING_DIR}/opt:\$PATH
-
-                            python3 -m robot \
-                            --variable browser:Chrome \
-                            --nostatusrc \
-                            -d Reports/chrome \
-                            -o output.xml \
-                            TestCases
-
-                            """
-                        }
-                    }
+                    """
                 }
-	        }
+            }
+
+            stage ('Test In Chrome'){
+                steps{
+                     sh """
+                     # Activate Python venv
+                     source ${WORKING_DIR}/TA_env/bin/activate
+                     cd ${WORKING_DIR}
+
+                     PATH=${WORKING_DIR}/opt:\$PATH
+
+                     python3 -m robot \
+                     --variable browser:Chrome \
+                     --nostatusrc \
+                     -d Reports/chrome \
+                     -o output.xml \
+                     TestCases
+
+                     """
+                }
+            }
 
             stage ('Publish RobotFramework Result') {
                 steps{
