@@ -9,7 +9,7 @@ ${LocatorSearchBox}    xpath=//input[@id="twotabsearchtextbox"]
 ${LocatorConditionOfUse}    xpath=//a[text()="Conditions of Use"]
 ${LocatorSearchButton}    xpath=//input[@id="nav-search-submit-button"]
 ${LocatorCurrentlyUnavailable}    xpath=//span[text()="Currently unavailable."]
-${LocatorModelNameIpadPro}  xpath=//span[@class="a-size-base" and contains(text(),"IPad Pro")
+${LocatorModelNameIpadPro}  xpath=//span[@class="a-size-base" and contains(text(),"IPad Pro")]
 ${LocatorHomeSignInButtone}    xpath=//a[@id="nav-link-accountList"]
 ${LocatorSignInEmail}   xpath=//input[@id="ap_email"]
 ${InvalidUserNameEmail}     12_21invalid@gmail.com
