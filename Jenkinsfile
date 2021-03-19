@@ -140,9 +140,9 @@ pipeline {
 		}
 		stage('Publish Security Scan Result'){
 			when { branch 'master' }
-			steps{
-                script {
-                    step([
+                steps{
+                    script {
+                        step([
                         $class                  : 'publishHTML',
                         allowMissing            : false,
                         alwaysLinkToLastBuild   : false,
@@ -151,8 +151,8 @@ pipeline {
                         reportFiles             : "report.html",
                         reportName              : "ZAP scan report",
                         reportTitles            : "",])
+                    }
                 }
-            }
 		}
 	}
 	 post {
