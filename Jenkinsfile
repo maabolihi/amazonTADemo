@@ -4,7 +4,6 @@ def CHROMEDRIVER_VERSION = "89.0.4389.23"
 def GECKODRIVER_VERSION = "0.29.0"
 def ZAP_TARGET_URL = "https://planningtasks.com/"
 def ZAP_ALERT_LVL = "High"
-def WORK_DIR = "${env.WORKSPACE}/${GIT_REPO}"
 
 pipeline {
 	agent {
@@ -27,8 +26,8 @@ pipeline {
 				sh """
 				git clone https://github.com/maabolihi/amazonTADemo.git
                 # Python virtual environment (venv)
-                python3 -m venv \${WORK_DIR}/TA_env
-                source \${WORK_DIR}/TA_env/bin/activate
+                python3 -m venv \${env.WORKSPACE}/${GIT_REPO}/TA_env
+                source \${env.WORKSPACE}/${GIT_REPO}/TA_env/bin/activate
                 python3 -m pip install --upgrade pip
                 python3 -m pip install robotframework
                 python3 -m pip install robotframework-seleniumlibrary
@@ -39,10 +38,10 @@ pipeline {
                 deactivate
 
                 # Download packages
-                if [ ! -d \${WORK_DIR}/opt ]; then
-                    mkdir \${WORK_DIR}/opt
+                if [ ! -d \${env.WORKSPACE}/${GIT_REPO}/opt ]; then
+                    mkdir \${env.WORKSPACE}/${GIT_REPO}/opt
                 fi
-                cd \${WORK_DIR}/opt
+                cd \${env.WORKSPACE}/${GIT_REPO}/opt
 
                 # Download chromedriver
                 if [ ! -f chromedriver ]; then
@@ -58,7 +57,7 @@ pipeline {
                     chmod +x geckodriver
                 fi
 
-                PATH=\${WORK_DIR}/opt:\$PATH
+                PATH=\${env.WORKSPACE}/${GIT_REPO}/opt:\$PATH
                 export PATH
                 which chromedriver
                 which geckodriver
@@ -75,10 +74,10 @@ pipeline {
                 sleep 1
 
                 # Activate Python venv
-                source \${WORK_DIR}/TA_env/bin/activate
-                cd \${WORK_DIR}
+                source \${env.WORKSPACE}/${GIT_REPO}/TA_env/bin/activate
+                cd \${env.WORKSPACE}/${GIT_REPO}
 
-                PATH=\${WORK_DIR}/opt:\$PATH
+                PATH=\${env.WORKSPACE}/${GIT_REPO}/opt:\$PATH
 
                 python3 -u -m robot \
                 --variable browser:Firefox \
@@ -95,10 +94,10 @@ pipeline {
                 sh """
 
                 # Activate Python venv
-                source \${WORK_DIR}/TA_env/bin/activate
-                cd \${WORK_DIR}
+                source \${env.WORKSPACE}/${GIT_REPO}/TA_env/bin/activate
+                cd \${env.WORKSPACE}/${GIT_REPO}
 
-                PATH=\${WORK_DIR}/opt:\$PATH
+                PATH=\${env.WORKSPACE}/${GIT_REPO}/opt:\$PATH
 
                 python3 -m robot \
                 --variable browser:Chrome \
@@ -130,10 +129,10 @@ pipeline {
 		stage('ZAP'){
 			when { branch 'master' }
 			steps{
-				sh("echo ${WORK_DIR}/securityZAP; ls -l;")
-				sh("bash -c \"chmod +x ${WORK_DIR}/securityZAP/*.sh\"")
-				sh("${WORK_DIR}/validate_input.sh")
-				sh("${WORK_DIR}/runZapScan.sh ${params.ZAP_TARGET_URL} ${WORK_DIR}/securityZAP ${params.ZAP_ALERT_LVL}")
+				sh("echo ${env.WORKSPACE}/${GIT_REPO}/securityZAP; ls -l;")
+				sh("bash -c \"chmod +x ${env.WORKSPACE}/${GIT_REPO}/securityZAP/*.sh\"")
+				sh("${env.WORKSPACE}/${GIT_REPO}/validate_input.sh")
+				sh("${env.WORKSPACE}/${GIT_REPO}/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE}/${GIT_REPO}/securityZAP ${params.ZAP_ALERT_LVL}")
 			}
 		}
 		stage('Publish'){
@@ -142,7 +141,7 @@ pipeline {
 				publishHTML([allowMissing: false,
 				alwaysLinkToLastBuild: false,
 				keepAll: false,
-				reportDir: '${WORK_DIR}/securityZAP/reports',
+				reportDir: '${env.WORKSPACE}/${GIT_REPO}/securityZAP/reports',
 				reportFiles: 'report.html',
 				reportName: 'ZAP scan report',
 				reportTitles: ''])
@@ -151,7 +150,7 @@ pipeline {
 	}
 	 post {
         always {
-            sh("${WORK_DIR}/securityZAP/runCleanup.sh")
+            sh("${env.WORKSPACE}/${GIT_REPO}/securityZAP/runCleanup.sh")
         }
 	}
 }
