@@ -12,13 +12,10 @@ def checkoutGitSCM(branch,gitUrl) {
 		userRemoteConfigs: [[url: gitUrl]]
 	])
 }
-properties([
-    pipelineTriggers([
-        cron('*/30 9-17 * * *')
-        ]),
-    buildDiscarder(logRotator(daysToKeepStr: '3', numToKeepStr: '15')),
-    ])
 
+properties([
+    pipelineTriggers([cron('*/30 9-17 * * *')]),
+    buildDiscarder(logRotator(daysToKeepStr: '3', numToKeepStr: '15')),])
 
 pipeline {
 	agent {
@@ -34,136 +31,126 @@ pipeline {
 		string(name: 'ZAP_TARGET_URL', defaultValue:'http://www.itsecgames.com', description:'')
 		choice(name: 'ZAP_ALERT_LVL', choices: ['High', 'Medium', 'Low'], description: 'See Zap documentation, default High')
 	}
+
 	stages{
     		stage ('Test In Firefox') {
-	steps{
-		script {
-					cleanWs()					
-		}
-        sh """
-        git clone https://github.com/maabolihi/amazonTADemo.git
-        # Python virtual environment (venv)
-        python3 -m venv ${WORKING_DIR}/TA_env
-        source  ${WORKING_DIR}/TA_env/bin/activate
-	    cd  ${WORKING_DIR}
-	    which python
-        python3 -m pip install --upgrade pip
-	    python3 -m pip install -r requirements.txt
-        deactivate
+	            steps{
+		            script {
+					    cleanWs()
+		            }
+                    sh """
+                    git clone https://github.com/maabolihi/amazonTADemo.git
+                    # Python virtual environment (venv)
+                    python3 -m venv ${WORKING_DIR}/TA_env
+                    source  ${WORKING_DIR}/TA_env/bin/activate
+                    cd  ${WORKING_DIR}
+                    which python
+                    python3 -m pip install --upgrade pip
+                    python3 -m pip install -r requirements.txt
+                    deactivate
 
-        # Download packages
-        if [ ! -d ${WORKING_DIR}/opt ]; then
-            mkdir ${WORKING_DIR}/opt
-        fi
-        cd ${WORKING_DIR}/opt
+                    # Download packages
+                    if [ ! -d ${WORKING_DIR}/opt ]; then
+                        mkdir ${WORKING_DIR}/opt
+                    fi
+                    cd ${WORKING_DIR}/opt
 
-        # Download chromedriver
-        if [ ! -f chromedriver ]; then
-            wget --quiet https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
-            unzip chromedriver_linux64.zip
-            chmod +x chromedriver
-        fi
+                    # Download chromedriver
+                    if [ ! -f chromedriver ]; then
+                        wget --quiet https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
+                        unzip chromedriver_linux64.zip
+                        chmod +x chromedriver
+                    fi
 
-        # Download geckodriver
-        if [ ! -f geckodriver ]; then
-            wget --quiet https://github.com/mozilla/geckodriver/releases/download/v${GECKODRIVER_VERSION}/geckodriver-v${GECKODRIVER_VERSION}-linux64.tar.gz
-            tar xzf geckodriver-v${GECKODRIVER_VERSION}-linux64.tar.gz
-            chmod +x geckodriver
-        fi
+                    # Download geckodriver
+                    if [ ! -f geckodriver ]; then
+                        wget --quiet https://github.com/mozilla/geckodriver/releases/download/v${GECKODRIVER_VERSION}/geckodriver-v${GECKODRIVER_VERSION}-linux64.tar.gz
+                        tar xzf geckodriver-v${GECKODRIVER_VERSION}-linux64.tar.gz
+                        chmod +x geckodriver
+                    fi
 
-        PATH=${WORKING_DIR}/opt:\$PATH
-        export PATH
-        which chromedriver
-        which geckodriver
-	
-        # Setup display
-        export DISPLAY=":99.0"
-        Xvfb :99 -screen 0 1280x1024x8 -ac &
-        sleep 1
+                    PATH=${WORKING_DIR}/opt:\$PATH
+                    export PATH
+                    which chromedriver
+                    which geckodriver
 
-        # Activate Python venv
-        source ${WORKING_DIR}/TA_env/bin/activate
-        cd ${WORKING_DIR}
+                    # Setup display
+                    export DISPLAY=":99.0"
+                    Xvfb :99 -screen 0 1280x1024x8 -ac &
+                    sleep 1
 
-        PATH=${WORKING_DIR}/opt:\$PATH
+                    # Activate Python venv
+                    source ${WORKING_DIR}/TA_env/bin/activate
+                    cd ${WORKING_DIR}
 
-        python3 -u -m robot \
-        --variable browser:Firefox \
-        --nostatusrc \
-        -d Reports/firefox \
-        -o output.xml \
-        TestCases
+                    PATH=${WORKING_DIR}/opt:\$PATH
 
-        """
-        }
-	}
+                    python3 -u -m robot \
+                    --variable browser:Firefox \
+                    --nostatusrc \
+                    -d Reports/firefox \
+                    -o output.xml \
+                    TestCases
 
-    stage ('Test In Chrome') {
-	steps{
-        sh """
+                    """
+                }
+	        }
 
-        # Activate Python venv
-        source ${WORKING_DIR}/TA_env/bin/activate
-        cd ${WORKING_DIR}
+            stage ('Test In Chrome') {
+	            steps{
+                    sh """
 
-        PATH=${WORKING_DIR}/opt:\$PATH
+                    # Activate Python venv
+                    source ${WORKING_DIR}/TA_env/bin/activate
+                    cd ${WORKING_DIR}
 
-        python3 -m robot \
-        --variable browser:Chrome \
-        --nostatusrc \
-        -d Reports/chrome \
-        -o output.xml \
-        TestCases
+                    PATH=${WORKING_DIR}/opt:\$PATH
 
-        """
-	}
-        }
+                    python3 -m robot \
+                    --variable browser:Chrome \
+                    --nostatusrc \
+                    -d Reports/chrome \
+                    -o output.xml \
+                    TestCases
 
-    stage ('Publish RobotFramework Result') {
+                    """
+	            }
+            }
 
-	steps{
-	RobotPublisher([
-		outputPath          : "${GIT_REPO}/Reports",
-            	outputFileName      : "**/output.xml",
-            	reportFileName      : '**/report.html',
-            	logFileName         : '**/log.html',
-            	disableArchiveOutput: false,
-            	passThreshold       : 100,
-            	unstableThreshold   : 90,
-            	otherFiles          : "**/*.png,**/*.jpg",])
-	}
-	}
-	stage ('Initialize'){
-			steps{
-				script {
-					currentBuild.displayName = "#${env.BUILD_NUMBER}-ZAP scan on ${params.ZAP_TARGET_URL}"
-					currentWorkspace=pwd()
-					cleanWs()					
-				}
-			}
-		}
-		stage ('ZAP'){
-			when { branch 'master' }
-			steps{
-				sh("echo ${env.WORKSPACE}; ls -l;")
-				checkoutGitSCM("main","https://github.com/maabolihi/zap_jenkins.git")
-				sh("bash -c \"chmod +x ${env.WORKSPACE}/*.sh\"")
-				sh("${env.WORKSPACE}/security/zap/validate_input.sh")
-				sh("${env.WORKSPACE}/security/zap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
-			}
-		}
-		stage ('Publish'){
-			when { branch 'master' }
-			steps{
-				publishHTML([allowMissing: false,
-				alwaysLinkToLastBuild: false,
-				keepAll: false,
-				reportDir: './reports',
-				reportFiles: 'report.html',
-				reportName: 'ZAP scan report',
-				reportTitles: ''])
-			}
-		}
+            stage ('Publish RobotFramework Result') {
+                steps{
+                    RobotPublisher([
+                                outputPath          : "${GIT_REPO}/Reports",
+                                outputFileName      : "**/output.xml",
+                                reportFileName      : '**/report.html',
+                                logFileName         : '**/log.html',
+                                disableArchiveOutput: false,
+                                passThreshold       : 100,
+                                unstableThreshold   : 90,
+                                otherFiles          : "**/*.png,**/*.jpg",])
+                    }
+	        }
+
+		    stage ('Run ZAP Scan'){
+			    when { branch 'master' }
+                steps{
+                    currentBuild.displayName = "#${env.BUILD_NUMBER}-ZAP scan on ${params.ZAP_TARGET_URL}"
+                    currentWorkspace=pwd()
+                    cleanWs()
+                    sh("echo ${env.WORKSPACE}; ls -l;")
+                    checkoutGitSCM("main","https://github.com/maabolihi/zap_jenkins.git")
+                    sh("bash -c \"chmod +x ${env.WORKSPACE}/*.sh\"")
+                    sh("${env.WORKSPACE}/security/zap/validate_input.sh")
+                    sh("${env.WORKSPACE}/security/zap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
+                    publishHTML([allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: false,
+                    reportDir: './reports',
+                    reportFiles: 'report.html',
+                    reportName: 'ZAP scan report',
+                    reportTitles: ''])
+                }
+		    }
 	}
 	 post {
         always {
