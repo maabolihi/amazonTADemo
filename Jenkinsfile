@@ -2,7 +2,6 @@ def GIT_REPO = "amazonTADemo"
 def FIREFOX_VERSION = "78.5.0esr"
 def CHROMEDRIVER_VERSION = "89.0.4389.23"
 def GECKODRIVER_VERSION = "0.29.0"
-def ZAP_DIR = "${env.WORKSPACE}/${GIT_REPO}/securityZAP"
 def ZAP_TARGET_URL = "https://planningtasks.com/"
 def ZAP_ALERT_LVL = "High"
 
@@ -132,10 +131,10 @@ pipeline {
 		stage('ZAP'){
 			when { branch 'master' }
 			steps{
-				sh("echo ${ZAP_DIR}; ls -l;")
-				sh("bash -c \"chmod +x ${ZAP_DIR}/*.sh\"")
-				sh("${ZAP_DIR}/validate_input.sh")
-				sh("${ZAP_DIR}/runZapScan.sh ${params.ZAP_TARGET_URL} ${ZAP_DIR} ${params.ZAP_ALERT_LVL}")
+				sh("echo ${env.WORKSPACE}/${GIT_REPO}/securityZAP; ls -l;")
+				sh("bash -c \"chmod +x ${env.WORKSPACE}/${GIT_REPO}/securityZAP/*.sh\"")
+				sh("${env.WORKSPACE}/${GIT_REPO}/securityZAP/validate_input.sh")
+				sh("${env.WORKSPACE}/${GIT_REPO}/securityZAP/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE}/${GIT_REPO}/securityZAP ${params.ZAP_ALERT_LVL}")
 			}
 		}
 		stage('Publish'){
@@ -144,7 +143,7 @@ pipeline {
 				publishHTML([allowMissing: false,
 				alwaysLinkToLastBuild: false,
 				keepAll: false,
-				reportDir: '${ZAP_DIR}/reports',
+				reportDir: '${env.WORKSPACE}/${GIT_REPO}/securityZAP/reports',
 				reportFiles: 'report.html',
 				reportName: 'ZAP scan report',
 				reportTitles: ''])
@@ -153,7 +152,7 @@ pipeline {
 	}
 	 post {
         always {
-            sh("${ZAP_DIR}/runCleanup.sh")
+            sh("${env.WORKSPACE}/${GIT_REPO}/securityZAP/runCleanup.sh")
         }
 	}
 }
