@@ -14,14 +14,14 @@ pipeline {
 		timeout(time: 180, unit: 'MINUTES')
 	}
 	parameters {
-		string(name: 'ZAP_TARGET_URL', defaultValue:'https://planningtasks.com/', description:'')
+		string(name: 'ZAP_TARGET_URL', defaultValue:'https://amazon.com/', description:'')
 		choice(name: 'ZAP_ALERT_LVL', choices: ['High', 'Medium', 'Low'], description: 'See Zap documentation, default High')
 	}
 	stages{
 		stage('Initialize'){
 			steps{
 				script {
-					currentBuild.displayName = "#${env.BUILD_NUMBER}-ZAP scan on ${params.ZAP_TARGET_URL}"
+					currentBuild.displayName = "#${env.BUILD_NUMBER}-Automation on ${params.ZAP_TARGET_URL}"
 					currentWorkspace=pwd()
 					cleanWs()
 				}
