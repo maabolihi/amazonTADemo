@@ -25,7 +25,6 @@ pipeline {
 					currentWorkspace=pwd()
 					cleanWs()
 				}
-				sh("echo ${env.WORKSPACE}; ls -l;")
 				sh """
 				git clone https://github.com/maabolihi/amazonTADemo.git
                 # Python virtual environment (venv)
@@ -96,14 +95,18 @@ pipeline {
 		stage('Publish Robot Result'){
 			when { branch 'master' }
 			steps{
-				RobotPublisher([outputPath          : "${GIT_REPO}/Reports",
-            outputFileName      : "**/output.xml",
-            reportFileName      : '**/report.html',
-            logFileName         : '**/log.html',
-            disableArchiveOutput: false,
-            passThreshold       : 100,
-            unstableThreshold   : 90,
-            otherFiles          : "**/*.png,**/*.jpg",])
+			    script {
+                    step([
+                    $class              : 'RobotPublisher',
+                    outputPath          : "${GIT_REPO}/Reports",
+                    outputFileName      : "**/output.xml",
+                    reportFileName      : '**/report.html',
+                    logFileName         : '**/log.html',
+                    disableArchiveOutput: false,
+                    passThreshold       : 100,
+                    unstableThreshold   : 90,
+                    otherFiles          : "**/*.png,**/*.jpg",])
+			    }
 			}
 		}
 		stage('ZAP'){
