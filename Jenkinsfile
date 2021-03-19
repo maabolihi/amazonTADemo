@@ -78,13 +78,6 @@ pipeline {
                     export DISPLAY=":99.0"
                     Xvfb :99 -screen 0 1280x1024x8 -ac &
                     sleep 1
-
-                    # Activate Python venv
-                    source ${WORKING_DIR}/TA_env/bin/activate
-                    cd ${WORKING_DIR}
-
-                    PATH=${WORKING_DIR}/opt:\$PATH
-
                     """
 	            }
             }
@@ -93,6 +86,11 @@ pipeline {
                     stage ('Test In Firefox'){
                         steps{
                             sh """
+                            # Activate Python venv
+                            source ${WORKING_DIR}/TA_env/bin/activate
+                            cd ${WORKING_DIR}
+
+                            PATH=${WORKING_DIR}/opt:\$PATH
 
                             python3 -u -m robot \
                             --variable browser:Firefox \
@@ -108,6 +106,11 @@ pipeline {
                     stage ('Test In Chrome'){
                         steps{
                             sh """
+                            # Activate Python venv
+                            source ${WORKING_DIR}/TA_env/bin/activate
+                            cd ${WORKING_DIR}
+
+                            PATH=${WORKING_DIR}/opt:\$PATH
 
                             python3 -m robot \
                             --variable browser:Chrome \
