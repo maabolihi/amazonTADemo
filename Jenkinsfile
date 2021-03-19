@@ -142,19 +142,15 @@ pipeline {
 		}
 		stage('Publish Security Scan Result'){
 			when { branch 'master' }
-                steps{
-                    script {
-                        step([
-                        $class                  : 'publishHTML',
-                        allowMissing            : false,
-                        alwaysLinkToLastBuild   : false,
-                        keepAll                 : false,
-                        reportDir               : "${GIT_REPO}/securityZap/reports",
-                        reportFiles             : "report.html",
-                        reportName              : "ZAP scan report",
-                        reportTitles            : "",])
-                    }
-                }
+			steps{
+				publishHTML([allowMissing: false,
+				alwaysLinkToLastBuild: false,
+				keepAll: false,
+				reportDir: './reports',
+				reportFiles: 'report.html',
+				reportName: 'ZAP scan report',
+				reportTitles: ''])
+			}
 		}
 	}
 	 post {
