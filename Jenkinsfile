@@ -70,7 +70,6 @@ pipeline {
 			}
 		}
 		stage('Test In Firefox'){
-			when { branch 'master' }
 			steps{
 				sh """
                 # Setup display
@@ -115,7 +114,6 @@ pipeline {
             }
         }
 		stage('Publish Robot Result'){
-			when { branch 'master' }
                 steps{
                     script {
                         step([
@@ -132,7 +130,6 @@ pipeline {
                 }
 		}
 		stage('Run ZAP Scan'){
-			when { branch 'master' }
 			steps{
 				sh("echo ${env.WORKSPACE}/${GIT_REPO}/securityZap; ls -l;")
 				sh("bash -c \"chmod +x ${env.WORKSPACE}/${GIT_REPO}/securityZap/*.sh\"")
@@ -141,7 +138,6 @@ pipeline {
 			}
 		}
 		stage('Publish Security Scan Result'){
-			when { branch 'master' }
 			steps{
 				publishHTML([allowMissing: false,
 				alwaysLinkToLastBuild: false,
