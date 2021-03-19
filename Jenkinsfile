@@ -2,8 +2,6 @@ def GIT_REPO = "amazonTADemo"
 def FIREFOX_VERSION = "78.5.0esr"
 def CHROMEDRIVER_VERSION = "89.0.4389.23"
 def GECKODRIVER_VERSION = "0.29.0"
-def ZAP_TARGET_URL = "https://planningtasks.com/"
-def ZAP_ALERT_LVL = "High"
 
 pipeline {
 	agent {
@@ -14,6 +12,10 @@ pipeline {
 		disableConcurrentBuilds()
 		buildDiscarder(logRotator(numToKeepStr: '10'))
 		timeout(time: 180, unit: 'MINUTES')
+	}
+	parameters {
+		string(name: 'ZAP_TARGET_URL', defaultValue:'https:planningtasks.com', description:'')
+		choice(name: 'ZAP_ALERT_LVL', choices: ['High', 'Medium', 'Low'], description: 'See Zap documentation, default High')
 	}
 	stages{
 		stage('Initialize'){
