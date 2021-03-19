@@ -8,6 +8,9 @@ pipeline {
 		node { label 'test' }
 	}
     options {
+        pipelineTriggers([
+        cron('*/40 9-17 * * *')
+        ]),
 		timestamps()
 		disableConcurrentBuilds()
 		buildDiscarder(logRotator(numToKeepStr: '10'))
