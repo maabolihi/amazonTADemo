@@ -141,9 +141,6 @@ pipeline {
 		    stage ('Run ZAP Scan'){
 			    when { branch 'master' }
                 steps{
-                    currentBuild.displayName = "#${env.BUILD_NUMBER}-ZAP scan on ${params.ZAP_TARGET_URL}"
-                    currentWorkspace=pwd()
-                    cleanWs()
                     sh("echo ${env.WORKSPACE}; ls -l;")
                     checkoutGitSCM("main","https://github.com/maabolihi/zap_jenkins.git")
                     sh("bash -c \"chmod +x ${env.WORKSPACE}/*.sh\"")
