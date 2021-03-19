@@ -27,7 +27,7 @@ pipeline {
 				git clone https://github.com/maabolihi/amazonTADemo.git
                 # Python virtual environment (venv)
                 python3 -m venv ${env.WORKSPACE}/${GIT_REPO}/TA_env
-                source \${env.WORKSPACE}/${GIT_REPO}/TA_env/bin/activate
+                source ${env.WORKSPACE}/${GIT_REPO}/TA_env/bin/activate
                 python3 -m pip install --upgrade pip
                 python3 -m pip install robotframework
                 python3 -m pip install robotframework-seleniumlibrary
@@ -38,10 +38,10 @@ pipeline {
                 deactivate
 
                 # Download packages
-                if [ ! -d \${env.WORKSPACE}/${GIT_REPO}/opt ]; then
-                    mkdir \${env.WORKSPACE}/${GIT_REPO}/opt
+                if [ ! -d ${env.WORKSPACE}/${GIT_REPO}/opt ]; then
+                    mkdir ${env.WORKSPACE}/${GIT_REPO}/opt
                 fi
-                cd \${env.WORKSPACE}/${GIT_REPO}/opt
+                cd ${env.WORKSPACE}/${GIT_REPO}/opt
 
                 # Download chromedriver
                 if [ ! -f chromedriver ]; then
@@ -57,7 +57,7 @@ pipeline {
                     chmod +x geckodriver
                 fi
 
-                PATH=\${env.WORKSPACE}/${GIT_REPO}/opt:\$PATH
+                PATH=${env.WORKSPACE}/${GIT_REPO}/opt:\$PATH
                 export PATH
                 which chromedriver
                 which geckodriver
@@ -74,10 +74,10 @@ pipeline {
                 sleep 1
 
                 # Activate Python venv
-                source \${env.WORKSPACE}/${GIT_REPO}/TA_env/bin/activate
-                cd \${env.WORKSPACE}/${GIT_REPO}
+                source ${env.WORKSPACE}/${GIT_REPO}/TA_env/bin/activate
+                cd ${env.WORKSPACE}/${GIT_REPO}
 
-                PATH=\${env.WORKSPACE}/${GIT_REPO}/opt:\$PATH
+                PATH=${env.WORKSPACE}/${GIT_REPO}/opt:\$PATH
 
                 python3 -u -m robot \
                 --variable browser:Firefox \
@@ -94,10 +94,10 @@ pipeline {
                 sh """
 
                 # Activate Python venv
-                source \${env.WORKSPACE}/${GIT_REPO}/TA_env/bin/activate
-                cd \${env.WORKSPACE}/${GIT_REPO}
+                source ${env.WORKSPACE}/${GIT_REPO}/TA_env/bin/activate
+                cd ${env.WORKSPACE}/${GIT_REPO}
 
-                PATH=\${env.WORKSPACE}/${GIT_REPO}/opt:\$PATH
+                PATH=${env.WORKSPACE}/${GIT_REPO}/opt:\$PATH
 
                 python3 -m robot \
                 --variable browser:Chrome \
