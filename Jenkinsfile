@@ -131,10 +131,10 @@ pipeline {
 		stage('ZAP'){
 			when { branch 'master' }
 			steps{
-				sh("echo ${env.WORKSPACE}/${GIT_REPO}/securityZAP; ls -l;")
-				sh("bash -c \"chmod +x ${env.WORKSPACE}/${GIT_REPO}/securityZAP/*.sh\"")
+				sh("echo ${env.WORKSPACE}/${GIT_REPO}/securityZap; ls -l;")
+				sh("bash -c \"chmod +x ${env.WORKSPACE}/${GIT_REPO}/securityZap/*.sh\"")
 				sh("${env.WORKSPACE}/${GIT_REPO}/validate_input.sh")
-				sh("${env.WORKSPACE}/${GIT_REPO}/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE}/${GIT_REPO}/securityZAP ${params.ZAP_ALERT_LVL}")
+				sh("${env.WORKSPACE}/${GIT_REPO}/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE}/${GIT_REPO}/securityZap ${params.ZAP_ALERT_LVL}")
 			}
 		}
 		stage('Publish'){
@@ -143,7 +143,7 @@ pipeline {
 				publishHTML([allowMissing: false,
 				alwaysLinkToLastBuild: false,
 				keepAll: false,
-				reportDir: '${env.WORKSPACE}/${GIT_REPO}/securityZAP/reports',
+				reportDir: '${env.WORKSPACE}/${GIT_REPO}/securityZap/reports',
 				reportFiles: 'report.html',
 				reportName: 'ZAP scan report',
 				reportTitles: ''])
@@ -152,7 +152,7 @@ pipeline {
 	}
 	 post {
         always {
-            sh("${env.WORKSPACE}/${GIT_REPO}/securityZAP/runCleanup.sh")
+            sh("${env.WORKSPACE}/${GIT_REPO}/securityZap/runCleanup.sh")
         }
 	}
 }
