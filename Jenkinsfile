@@ -26,7 +26,7 @@ pipeline {
 				sh """
 				git clone https://github.com/maabolihi/amazonTADemo.git
                 # Python virtual environment (venv)
-                python3 -m venv \${env.WORKSPACE}/${GIT_REPO}/TA_env
+                python3 -m venv ${env.WORKSPACE}/${GIT_REPO}/TA_env
                 source \${env.WORKSPACE}/${GIT_REPO}/TA_env/bin/activate
                 python3 -m pip install --upgrade pip
                 python3 -m pip install robotframework
