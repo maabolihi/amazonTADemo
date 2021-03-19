@@ -114,20 +114,20 @@ pipeline {
         }
 		stage('Publish Robot Result'){
 			when { branch 'master' }
-			steps{
-			    script {
-                    step([
-                    $class              : 'RobotPublisher',
-                    outputPath          : "${GIT_REPO}/Reports",
-                    outputFileName      : "**/output.xml",
-                    reportFileName      : '**/report.html',
-                    logFileName         : '**/log.html',
-                    disableArchiveOutput: false,
-                    passThreshold       : 100,
-                    unstableThreshold   : 90,
-                    otherFiles          : "**/*.png,**/*.jpg",])
-			    }
-			}
+                steps{
+                    script {
+                        step([
+                        $class              : 'RobotPublisher',
+                        outputPath          : "${GIT_REPO}/Reports",
+                        outputFileName      : "**/output.xml",
+                        reportFileName      : '**/report.html',
+                        logFileName         : '**/log.html',
+                        disableArchiveOutput: false,
+                        passThreshold       : 100,
+                        unstableThreshold   : 90,
+                        otherFiles          : "**/*.png,**/*.jpg",])
+                    }
+                }
 		}
 		stage('Run ZAP Scan'){
 			when { branch 'master' }
@@ -140,17 +140,19 @@ pipeline {
 		}
 		stage('Publish Security Scan Result'){
 			when { branch 'master' }
-			    script {
+			steps{
+                script {
                     step([
-                    $class                  : 'publishHTML',
-                    allowMissing            : false,
-                    alwaysLinkToLastBuild   : false,
-                    keepAll                 : false,
-                    reportDir               : "${GIT_REPO}/securityZap/reports",
-                    reportFiles             : "report.html",
-                    reportName              : "ZAP scan report",
-                    reportTitles            : "",])
-			    }
+                        $class                  : 'publishHTML',
+                        allowMissing            : false,
+                        alwaysLinkToLastBuild   : false,
+                        keepAll                 : false,
+                        reportDir               : "${GIT_REPO}/securityZap/reports",
+                        reportFiles             : "report.html",
+                        reportName              : "ZAP scan report",
+                        reportTitles            : "",])
+                }
+            }
 		}
 	}
 	 post {
