@@ -9,6 +9,7 @@ ${LocatorSearchBox}    xpath=//input[@id="twotabsearchtextbox"]
 ${LocatorConditionOfUse}    xpath=//a[text()="Conditions of Use"]
 ${LocatorSearchButton}    xpath=//input[@id="nav-search-submit-button"]
 ${LocatorCurrentlyUnavailable}    xpath=//span[text()="Currently unavailable."]
+${LocatorModelNameIpadPro}  xpath=//span[@class="a-size-base" and contains(text(),"IPad Pro")
 ${LocatorHomeSignInButtone}    xpath=//a[@id="nav-link-accountList"]
 ${LocatorSignInEmail}   xpath=//input[@id="ap_email"]
 ${InvalidUserNameEmail}     12_21invalid@gmail.com
@@ -52,10 +53,10 @@ Verify Product Is Shown
     Capture Page Screenshot
     Wait Until Element Is Visible    xpath=//span[text()="${productName}"]
 
-Verify Product Is Unavailable
+Verify Product Is Ipad Pro Model
     [Arguments]     ${productName}
     Click Element    xpath=//span[text()="${productName}"]
-    Wait Until Element Is Visible    ${LocatorCurrentlyUnavailable}
+    Wait Until Element Is Visible    ${LocatorModelNameIpadPro}
 
 Go To Login Page
     Click Element    ${LocatorHomeSignInButtone}
