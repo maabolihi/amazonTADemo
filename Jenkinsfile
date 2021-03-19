@@ -3,6 +3,9 @@ def FIREFOX_VERSION = "78.5.0esr"
 def CHROMEDRIVER_VERSION = "89.0.4389.23"
 def GECKODRIVER_VERSION = "0.29.0"
 def WORKING_DIR = "\$WORKSPACE/${GIT_REPO}"
+def ZAP_TARGET_URL = "http://www.itsecgames.com"
+def ZAP_ALERT_LVL = "High"
+
 def checkoutGitSCM(branch,gitUrl) {
 	checkout([$class: 'GitSCM',
 		branches: [[name: branch ]],
@@ -26,10 +29,6 @@ pipeline {
 		disableConcurrentBuilds()
 		buildDiscarder(logRotator(numToKeepStr: '10'))
 		timeout(time: 180, unit: 'MINUTES')
-	}
-	parameters {
-		string(name: 'ZAP_TARGET_URL', defaultValue:'http://www.itsecgames.com', description:'')
-		choice(name: 'ZAP_ALERT_LVL', choices: ['High', 'Medium', 'Low'], description: 'See Zap documentation, default High')
 	}
 
 	stages{
@@ -130,19 +129,11 @@ pipeline {
                                 otherFiles          : "**/*.png,**/*.jpg",])
                     }
 	        }
-            stage('Initialize Zap Scan'){
-			    steps{
-				    script {
-					    currentWorkspace=pwd()
-					    cleanWs()
-				    }
-			    }
-		    }
+
 		    stage ('Run ZAP Scan'){
 			    when { branch 'master' }
                 steps{
                     sh("echo ${env.WORKSPACE}; ls -l;")
-                    checkoutGitSCM("main","https://github.com/maabolihi/zap_jenkins.git")
                     sh("bash -c \"chmod +x ${env.WORKSPACE}/*.sh\"")
                     sh("${WORKING_DIR}/security/zap/validate_input.sh")
                     sh("${WORKING_DIR}/security/zap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
