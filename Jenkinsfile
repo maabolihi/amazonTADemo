@@ -26,7 +26,7 @@ pipeline {
 
     stages {
         stage ('Pre-Requisites') {
-            step([$class: 'WsCleanup'])
+            steps([$class: 'WsCleanup'])
             sh """
             git clone https://github.com/maabolihi/amazonTADemo.git
             # Python virtual environment (venv)
@@ -114,7 +114,7 @@ pipeline {
 
         stage ('Publish RobotFramework Result') {
 
-            step([
+            steps([
                 $class              : 'RobotPublisher',
                 outputPath          : "${GIT_REPO}/Reports",
                 outputFileName      : "**/output.xml",
