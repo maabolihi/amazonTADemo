@@ -8,7 +8,6 @@ pipeline {
 		node { label 'test' }
 	}
     options {
-        pipelineTriggers(cron('*/30 9-17 * * *')),
 		timestamps()
 		disableConcurrentBuilds()
 		timeout(time: 180, unit: 'MINUTES')
@@ -17,6 +16,9 @@ pipeline {
 		string(name: 'ZAP_TARGET_URL', defaultValue:'https://amazon.com/', description:'')
 		choice(name: 'ZAP_ALERT_LVL', choices: ['High', 'Medium', 'Low'], description: 'See Zap documentation, default High')
 	}
+	triggers {
+        cron('*/30 9-17 * * *')
+    }
 	stages{
 		stage('Initialize'){
 			steps{
