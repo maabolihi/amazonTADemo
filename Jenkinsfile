@@ -128,7 +128,7 @@ pipeline {
 			    }
 			}
 		}
-		stage('ZAP'){
+		stage('Run ZAP Scan'){
 			when { branch 'master' }
 			steps{
 				sh("echo ${env.WORKSPACE}/${GIT_REPO}/securityZap; ls -l;")
@@ -137,7 +137,7 @@ pipeline {
 				sh("${env.WORKSPACE}/${GIT_REPO}/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE}/${GIT_REPO}/securityZap ${params.ZAP_ALERT_LVL}")
 			}
 		}
-		stage('Publish'){
+		stage('Publish Seurity Scan Result'){
 			when { branch 'master' }
 			steps{
 				publishHTML([allowMissing: false,
