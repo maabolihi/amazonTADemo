@@ -89,31 +89,33 @@ pipeline {
             }
 	stages{
     		stage ('Run Tests') {
-	            steps ('Test In Firefox'){
+    		    parallel{
+                    stage ('Test In Firefox'){
 
-                    sh """
+                        sh """
 
-                    python3 -u -m robot \
-                    --variable browser:Firefox \
-                    --nostatusrc \
-                    -d Reports/firefox \
-                    -o output.xml \
-                    TestCases
+                        python3 -u -m robot \
+                        --variable browser:Firefox \
+                        --nostatusrc \
+                        -d Reports/firefox \
+                        -o output.xml \
+                        TestCases
 
-                    """
+                        """
+                    }
+                    stage ('Test In Chrome'){
+                        sh """
+
+                        python3 -m robot \
+                        --variable browser:Chrome \
+                        --nostatusrc \
+                        -d Reports/chrome \
+                        -o output.xml \
+                        TestCases
+
+                        """
+                    }
                 }
-                steps ('Test In Chrome'){
-                    sh """
-
-                    python3 -m robot \
-                    --variable browser:Chrome \
-                    --nostatusrc \
-                    -d Reports/chrome \
-                    -o output.xml \
-                    TestCases
-
-                    """
-	            }
 	        }
 
             stage ('Publish RobotFramework Result') {
