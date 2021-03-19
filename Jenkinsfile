@@ -47,6 +47,7 @@ pipeline {
 
                 # Download chromedriver
                 if [ ! -f chromedriver ]; then
+                    google-chrome --version
                     wget --quiet https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
                     unzip chromedriver_linux64.zip
                     chmod +x chromedriver
@@ -139,15 +140,17 @@ pipeline {
 		}
 		stage('Publish Security Scan Result'){
 			when { branch 'master' }
-			steps{
-				publishHTML([allowMissing: false,
-				alwaysLinkToLastBuild: false,
-				keepAll: false,
-				reportDir: '${env.WORKSPACE}/${GIT_REPO}/securityZap/reports',
-				reportFiles: 'report.html',
-				reportName: 'ZAP scan report',
-				reportTitles: ''])
-			}
+			    script {
+                    step([
+                    $class                  : 'publishHTML',
+                    allowMissing            : false,
+                    alwaysLinkToLastBuild   : false,
+                    keepAll                 : false,
+                    reportDir               : "${GIT_REPO}/securityZap/reports",
+                    reportFiles             : "report.html",
+                    reportName              : "ZAP scan report",
+                    reportTitles            : "",])
+			    }
 		}
 	}
 	 post {
