@@ -30,7 +30,8 @@ pipeline {
 		buildDiscarder(logRotator(numToKeepStr: '10'))
 		timeout(time: 180, unit: 'MINUTES')
 	}
-    stage ('Initialize') {
+	stages{
+	        stage ('Initialize') {
 	            steps{
 	                script {
 					    cleanWs()
@@ -87,7 +88,6 @@ pipeline {
                     """
 	            }
             }
-	stages{
     		stage ('Run Tests') {
     		    parallel{
                     stage ('Test In Firefox'){
