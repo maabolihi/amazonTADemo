@@ -114,7 +114,7 @@ node {
         }
     }
     stage('Initialize'){
-			steps{
+			step{
 				script {
 					currentWorkspace=pwd()
 				}
