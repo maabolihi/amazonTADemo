@@ -30,15 +30,15 @@ pipeline {
 		buildDiscarder(logRotator(numToKeepStr: '10'))
 		timeout(time: 180, unit: 'MINUTES')
 	}
-
-	stages{
-    		stage ('Test In Firefox') {
+    stage ('Initialize') {
 	            steps{
-		            script {
+	                script {
 					    cleanWs()
 		            }
+
                     sh """
-                    git clone https://github.com/maabolihi/amazonTADemo.git
+
+                     git clone https://github.com/maabolihi/amazonTADemo.git
                     # Python virtual environment (venv)
                     python3 -m venv ${WORKING_DIR}/TA_env
                     source  ${WORKING_DIR}/TA_env/bin/activate
@@ -84,6 +84,15 @@ pipeline {
 
                     PATH=${WORKING_DIR}/opt:\$PATH
 
+                    """
+	            }
+            }
+	stages{
+    		stage ('Run Tests') {
+	            steps ('Test In Firefox'){
+
+                    sh """
+
                     python3 -u -m robot \
                     --variable browser:Firefox \
                     --nostatusrc \
@@ -93,17 +102,8 @@ pipeline {
 
                     """
                 }
-	        }
-
-            stage ('Test In Chrome') {
-	            steps{
+                steps ('Test In Chrome'){
                     sh """
-
-                    # Activate Python venv
-                    source ${WORKING_DIR}/TA_env/bin/activate
-                    cd ${WORKING_DIR}
-
-                    PATH=${WORKING_DIR}/opt:\$PATH
 
                     python3 -m robot \
                     --variable browser:Chrome \
@@ -114,7 +114,7 @@ pipeline {
 
                     """
 	            }
-            }
+	        }
 
             stage ('Publish RobotFramework Result') {
                 steps{
