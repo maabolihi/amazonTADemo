@@ -124,7 +124,7 @@ pipeline {
             stage ('Publish RobotFramework Result') {
                 steps{
                     RobotPublisher([
-                                outputPath          : "${GIT_REPO}/Reports",
+                                outputPath          : "${WORKING_DIR}/Reports",
                                 outputFileName      : "**/output.xml",
                                 reportFileName      : '**/report.html',
                                 logFileName         : '**/log.html',
@@ -138,10 +138,10 @@ pipeline {
 		    stage ('Run ZAP Scan'){
 			    when { branch 'master' }
                 steps{
-                    sh("echo ${env.WORKSPACE}; ls -l;")
+                    sh("echo ${WORKING_DIR}; ls -l;")
                     sh("bash -c \"chmod +x ${WORKING_DIR}/security/zap/*.sh\"")
                     sh("${WORKING_DIR}/security/zap/validate_input.sh")
-                    sh("${WORKING_DIR}/security/zap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
+                    sh("${WORKING_DIR}/security/zap/runZapScan.sh ${params.ZAP_TARGET_URL} ${WORKING_DIR}/security/zap/ ${params.ZAP_ALERT_LVL}")
                     publishHTML([allowMissing: false,
                     alwaysLinkToLastBuild: false,
                     keepAll: false,
