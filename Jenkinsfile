@@ -139,7 +139,7 @@ pipeline {
 			    when { branch 'master' }
                 steps{
                     sh("echo ${env.WORKSPACE}; ls -l;")
-                    sh("bash -c \"chmod +x ${env.WORKSPACE}/*.sh\"")
+                    sh("bash -c \"chmod +x ${WORKING_DIR}/*.sh\"")
                     sh("${WORKING_DIR}/security/zap/validate_input.sh")
                     sh("${WORKING_DIR}/security/zap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
                     publishHTML([allowMissing: false,
