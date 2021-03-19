@@ -91,29 +91,33 @@ pipeline {
     		stage ('Run Tests') {
     		    parallel{
                     stage ('Test In Firefox'){
+                        steps{
+                            sh """
 
-                        sh """
+                            python3 -u -m robot \
+                            --variable browser:Firefox \
+                            --nostatusrc \
+                            -d Reports/firefox \
+                            -o output.xml \
+                            TestCases
 
-                        python3 -u -m robot \
-                        --variable browser:Firefox \
-                        --nostatusrc \
-                        -d Reports/firefox \
-                        -o output.xml \
-                        TestCases
+                            """
+                        }
 
-                        """
                     }
                     stage ('Test In Chrome'){
-                        sh """
+                        steps{
+                            sh """
 
-                        python3 -m robot \
-                        --variable browser:Chrome \
-                        --nostatusrc \
-                        -d Reports/chrome \
-                        -o output.xml \
-                        TestCases
+                            python3 -m robot \
+                            --variable browser:Chrome \
+                            --nostatusrc \
+                            -d Reports/chrome \
+                            -o output.xml \
+                            TestCases
 
-                        """
+                            """
+                        }
                     }
                 }
 	        }
