@@ -146,7 +146,7 @@ pipeline {
 				publishHTML([allowMissing: false,
 				alwaysLinkToLastBuild: false,
 				keepAll: false,
-				reportDir: './reports',
+				reportDir: '${ZAP_DIR}/reports',
 				reportFiles: 'report.html',
 				reportName: 'ZAP scan report',
 				reportTitles: ''])
