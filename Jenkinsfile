@@ -3,15 +3,6 @@ def FIREFOX_VERSION = "78.5.0esr"
 def CHROMEDRIVER_VERSION = "89.0.4389.23"
 def GECKODRIVER_VERSION = "0.29.0"
 
-def checkoutGitSCM(branch,gitUrl) {
-	checkout([$class: 'GitSCM',
-		branches: [[name: branch ]],
-		doGenerateSubmoduleConfigurations: false,
-		extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '.']],
-		submoduleCfg: [],
-		userRemoteConfigs: [[url: gitUrl]]
-	])
-}
 pipeline {
 	agent {
 		node { label 'test' }
@@ -34,9 +25,9 @@ pipeline {
 					currentWorkspace=pwd()
 					cleanWs()
 				}
-			    checkoutGitSCM("master","https://github.com/maabolihi/amazonTADemo.git")
 				sh("echo ${env.WORKSPACE}; ls -l;")
 				sh """
+				git clone https://github.com/maabolihi/amazonTADemo.git
                 # Python virtual environment (venv)
                 python3 -m venv \$HOME/TA_env
                 source \$HOME/TA_env/bin/activate
@@ -119,7 +110,6 @@ pipeline {
 			when { branch 'master' }
 			steps{
 				sh("echo ${env.WORKSPACE}; ls -l;")
-				checkoutGitSCM("main","https://github.com/maabolihi/zap_jenkins.git")
 				sh("bash -c \"chmod +x ${env.WORKSPACE}/*.sh\"")
 				sh("${env.WORKSPACE}/validate_input.sh")
 				sh("${env.WORKSPACE}/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
