@@ -4,7 +4,7 @@ def CHROMEDRIVER_VERSION = "89.0.4389.23"
 def GECKODRIVER_VERSION = "0.29.0"
 def ZAP_TARGET_URL = "https://planningtasks.com/"
 def ZAP_ALERT_LVL = "High"
-def WORK_DIR = "${env.WORKSPACE}/${GIT_REPO}"
+def WORK_DIR = "${WORKSPACE}/${GIT_REPO}"
 
 pipeline {
 	agent {
