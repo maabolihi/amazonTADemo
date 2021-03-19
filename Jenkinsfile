@@ -113,3 +113,10 @@ node {
             ])
         }
     }
+    stage('Initialize'){
+			steps{
+				script {
+					currentWorkspace=pwd()
+				}
+			}
+		}
