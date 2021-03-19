@@ -7,13 +7,8 @@ pipeline {
 	agent {
 		node { label 'test' }
 	}
-	properties([
-    pipelineTriggers([
-        cron('*/30 9-17 * * *')
-        ]),
-    buildDiscarder(logRotator(daysToKeepStr: '3', numToKeepStr: '15')),
-    ])
     options {
+        pipelineTriggers(cron('*/30 9-17 * * *')),
 		timestamps()
 		disableConcurrentBuilds()
 		timeout(time: 180, unit: 'MINUTES')
