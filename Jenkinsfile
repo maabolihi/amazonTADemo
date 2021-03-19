@@ -6,16 +6,6 @@ def WORKING_DIR = "\$WORKSPACE/${GIT_REPO}"
 def ZAP_TARGET_URL = "http://www.itsecgames.com"
 def ZAP_ALERT_LVL = "High"
 
-def checkoutGitSCM(branch,gitUrl) {
-	checkout([$class: 'GitSCM',
-		branches: [[name: branch ]],
-		doGenerateSubmoduleConfigurations: false,
-		extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '.']],
-		submoduleCfg: [],
-		userRemoteConfigs: [[url: gitUrl]]
-	])
-}
-
 properties([
     pipelineTriggers([cron('*/30 9-17 * * *')]),
     buildDiscarder(logRotator(daysToKeepStr: '3', numToKeepStr: '15')),])
