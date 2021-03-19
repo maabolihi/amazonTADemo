@@ -137,7 +137,7 @@ pipeline {
 				sh("${env.WORKSPACE}/${GIT_REPO}/securityZap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE}/${GIT_REPO}/securityZap ${params.ZAP_ALERT_LVL}")
 			}
 		}
-		stage('Publish Seurity Scan Result'){
+		stage('Publish Security Scan Result'){
 			when { branch 'master' }
 			steps{
 				publishHTML([allowMissing: false,
