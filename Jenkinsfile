@@ -73,13 +73,13 @@ pipeline {
                     export PATH
                     which chromedriver
                     which geckodriver
-
+                    """
 	            }
             }
             stage ('Test In Firefox'){
                 steps{
                     sh """
-                    # Setup display
+                    #Setup display
                     export DISPLAY=":99.0"
                     Xvfb :99 -screen 0 1280x1024x8 -ac &
                     sleep 1
