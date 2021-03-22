@@ -23,7 +23,7 @@ pipeline {
 		stage('Initialize'){
 			steps{
 				script {
-					currentBuild.displayName = "#${env.BUILD_NUMBER}-Test Automation on ${params.TARGET_URL}"
+					currentBuild.displayName = "Test Automation on ${params.TARGET_URL}"
 					currentWorkspace=pwd()
 					cleanWs()
 				}
