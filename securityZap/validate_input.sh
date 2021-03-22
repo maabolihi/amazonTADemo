@@ -9,5 +9,5 @@ checkInput () {
       fi
   
 }
-checkInput "${ZAP_TARGET_URL}" "ZAP_TARGET_URL"
+checkInput "${TARGET_URL}" "TARGET_URL"
 checkInput "${ZAP_ALERT_LVL}" "ZAP_ALERT_LVL"
