@@ -21,10 +21,10 @@ ZAP_CONT_ID=$(docker run --name zap -p 2375:2375 -d owasp/zap2docker-stable zap.
 -config api.addrs.addr.regex=true)
 
 docker exec $ZAP_CONT_ID zap-cli -v -p 2375 status -t 120
-docker exec $ZAP_CONT_ID zap-cli -v -p 2375 open-url $ZAP_TARGET_URL
-docker exec $ZAP_CONT_ID zap-cli -v -p 2375 active-scan $ZAP_TARGET_URL
-docker exec $ZAP_CONT_ID zap-cli -v -p 2375 spider $ZAP_TARGET_URL
-docker exec $ZAP_CONT_ID zap-cli -v -p 2375 active-scan --scanners xss,sqli --recursive $ZAP_TARGET_URL
+docker exec $ZAP_CONT_ID zap-cli -v -p 2375 open-url $TARGET_URL
+docker exec $ZAP_CONT_ID zap-cli -v -p 2375 active-scan $TARGET_URL
+docker exec $ZAP_CONT_ID zap-cli -v -p 2375 spider $TARGET_URL
+docker exec $ZAP_CONT_ID zap-cli -v -p 2375 active-scan --scanners xss,sqli --recursive $TARGET_URL
 
 docker exec $ZAP_CONT_ID zap-cli -p 2375 report -o /home/zap/report.html -f html
 docker exec $ZAP_CONT_ID zap-cli -p 2375 report -o /home/zap/report.xml -f xml
