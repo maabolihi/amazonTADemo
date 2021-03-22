@@ -3,7 +3,6 @@ Documentation     The setup before run the test suites
 Library  SeleniumLibrary
 
 *** Variables ***
-${AmazonUrl}  https://www.amazon.com/
 ${UnavailableIpadProName}   2020 Apple iPad Pro (11-inch, Wi-Fi, 256GB) - Space Gray (2nd Generation)
 ${LocatorSearchBox}    xpath=//input[@id="twotabsearchtextbox"]
 ${LocatorConditionOfUse}    xpath=//a[text()="Conditions of Use"]
