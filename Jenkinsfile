@@ -13,7 +13,7 @@ pipeline {
 		timeout(time: 180, unit: 'MINUTES')
 	}
 	parameters {
-		string(name: 'ZAP_TARGET_URL', defaultValue:'https://amazon.com/', description:'')
+		string(name: 'TARGET_URL', defaultValue:'https://amazon.com/', description:'')
 		choice(name: 'ZAP_ALERT_LVL', choices: ['High', 'Medium', 'Low'], description: 'See Zap documentation, default High')
 	}
 	triggers {
@@ -23,7 +23,7 @@ pipeline {
 		stage('Initialize'){
 			steps{
 				script {
-					currentBuild.displayName = "#${env.BUILD_NUMBER}-Test Automation on ${params.ZAP_TARGET_URL}"
+					currentBuild.displayName = "#${env.BUILD_NUMBER}-Test Automation on ${params.TARGET_URL}"
 					currentWorkspace=pwd()
 					cleanWs()
 				}
@@ -85,6 +85,7 @@ pipeline {
 
                 python3 -u -m robot \
                 --variable browser:Firefox \
+                --variable amazonUrl:${TARGET_URL} \
                 --nostatusrc \
                 -d Reports/firefox \
                 -o output.xml \
@@ -105,6 +106,7 @@ pipeline {
 
                 python3 -m robot \
                 --variable browser:Chrome \
+                --variable amazonUrl:${TARGET_URL} \
                 --nostatusrc \
                 -d Reports/chrome \
                 -o output.xml \
@@ -134,7 +136,7 @@ pipeline {
 				sh("echo ${env.WORKSPACE}/${GIT_REPO}/securityZap; ls -l;")
 				sh("bash -c \"chmod +x ${env.WORKSPACE}/${GIT_REPO}/securityZap/*.sh\"")
 				sh("${env.WORKSPACE}/${GIT_REPO}/securityZap/validate_input.sh")
-				sh("${env.WORKSPACE}/${GIT_REPO}/securityZap/runZapScan.sh ${params.ZAP_TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
+				sh("${env.WORKSPACE}/${GIT_REPO}/securityZap/runZapScan.sh ${params.TARGET_URL} ${env.WORKSPACE} ${params.ZAP_ALERT_LVL}")
 			}
 		}
 		stage('Publish Security Scan Result'){

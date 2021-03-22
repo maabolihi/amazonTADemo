@@ -18,8 +18,8 @@ ${LocatorLogInButton}    xpath=//input[@id="continue"]
 
 *** Keywords ***
 Open Amazon Page
-    [Arguments]     ${browser}
-    Run Keyword If      '${browser}' == 'Chrome'    Open Chrome   url=${AmazonUrl}
+    [Arguments]     ${browser}  ${amazonUrl}
+    Run Keyword If      '${browser}' == 'Chrome'    Open Chrome   url=${amazonUrl}
     ...     ELSE
     ...     Open Browser   url=${AmazonUrl}  browser=${browser}
     Maximize Browser Window
