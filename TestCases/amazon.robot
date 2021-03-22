@@ -5,7 +5,7 @@ Resource  ../setup.robot
 Suite Setup    Test Setup
 #Suite Teardown    Window Ke
 # the browser will be opened in the start-up of the test case
-Test Setup       Open Amazon Page    browser=${Browser} amazonUrl=${amazonUrl}
+Test Setup       Open Amazon Page    browser=${Browser}  amazonUrl=${amazonUrl}
 Test Teardown    Close Browser
 
 *** Keywords ***
