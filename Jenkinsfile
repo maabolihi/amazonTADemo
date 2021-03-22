@@ -1,4 +1,5 @@
 def GIT_REPO = "amazonTADemo"
+def GIT_CLONE_URL = "https://github.com/maabolihi/${GIT_REPO}.git"
 def FIREFOX_VERSION = "78.5.0esr"
 def CHROMEDRIVER_VERSION = "89.0.4389.23"
 def GECKODRIVER_VERSION = "0.29.0"
@@ -28,7 +29,7 @@ pipeline {
 					cleanWs()
 				}
 				sh """
-				git clone https://github.com/maabolihi/amazonTADemo.git
+				git clone ${GIT_CLONE_URL}
                 # Python virtual environment (venv)
                 python3 -m venv ${env.WORKSPACE}/${GIT_REPO}/TA_env
                 source ${env.WORKSPACE}/${GIT_REPO}/TA_env/bin/activate
