@@ -67,6 +67,9 @@ pipeline {
                 export PATH
                 which chromedriver
                 which geckodriver
+
+                # Download ZAP docker
+                docker pull owasp/zap2docker-stable
                 """
 			}
 		}
